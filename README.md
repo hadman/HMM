@@ -15,3 +15,4 @@
 
 HEllo Dima
 HELLO WORLD!
+NEW STRING
