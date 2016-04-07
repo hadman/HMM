@@ -54,6 +54,7 @@ bool creature::move(double x, double y) {
             }
 
             attack(map.get_creature(x, y));
+
         }
     } else {//если недостаточно длины хода
         cout << "Too far. Creature`s path length = " << path_length << endl;
