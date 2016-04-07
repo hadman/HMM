@@ -7,32 +7,27 @@ int main() {
 
     creature monster;
 
-    string inter;
-    cout << "Enter command:" << endl;
-    cin >> inter;
-    while (inter != "!") {
-        if (inter == "mv") {
-            double x, y;
 
-            cout << "Input x" << endl;
+    double x, y;
+
+    cout << "Input x:";
+    cin >> x;
+
+    cout << "Input y:";
+    cin >> y;
+
+    if (x != 0 && y != 0) {
+
+        if (!monster.move(x, y)) {//запрашиваем координаты, пока не будут введены подходящие
+
+            cout << "Input x:";
             cin >> x;
 
-            cout << "Input y" << endl;
+            cout << "Input y:";
             cin >> y;
-
-
-            if (!monster.move(x, y)) {//запрашиваем координаты, пока не будут введены подходящие
-
-                cout << "Input x" << endl;
-                cin >> x;
-
-                cout << "Input y" << endl;
-                cin >> y;
-            }
-
-            cout << "Enter command:" << endl;
-            cin >> inter;
-
         }
+
+
     }
+
 }

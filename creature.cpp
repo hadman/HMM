@@ -29,16 +29,37 @@ unsigned int creature::get_damage(creature another) {
 bool creature::move(double x, double y) {
     double metrics = abs(x0 - x) + abs(y0 - y);//вычисляем расстояние до точки с текущего положения существа
     cout << metrics << endl;
+    bool answer;
     if (metrics <= path_length) {//если существу хватает длины хода, то премещаем его
-        x0 = x;
-        y0 = y;
-        return true;
-    }
-    else {
-        cout << "Too far. Creature`s path length = " << path_length << endl;
-        return false;
-    }
+        answer = true;
 
+        if (map.empty(x, y)) {//если клетка не занята другим существом
+            x0 = x;
+            y0 = y;
+        }
+        else//если клетка занята другим существом, то остановиться на предыдущей клетке и атаковать противника
+        {
+            if (y - y0 == 0) {//если двигаемся строго горизонтально
+                if (x > x0)//если двигаемся направо
+                    x0 = x - 1;
+                else//если двигаемся налево
+                    x0 = x + 1;
+            }
+            else {
+                x0 = x;
+                if (y > y0)//если двигаемся наверх
+                    y0 = y - 1;
+                else//если двигаемся вниз
+                    y0 = y + 1;
+            }
+
+            attack(map.get_creature(x, y));
+        }
+    } else {//если недостаточно длины хода
+        cout << "Too far. Creature`s path length = " << path_length << endl;
+        answer = false;
+    }
+    return answer;
 }
 
 creature::creature() {
