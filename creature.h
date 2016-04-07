@@ -16,19 +16,19 @@ protected:
     //защита - то, сколько урона существо может предотвратить
     unsigned int path_length;
     //длина хода
-    unsigned int x;
+    unsigned int x0;
     //абцисса координаты, на которой находится существо
-    unsigned int y;
+    unsigned int y0;
     //ордината координаты, на которой находится существо
     bool alive;
     //живо существо(1) или нет(0)
     unsigned char belong_to;//принадлежность к 1 или 2 игроку
 public:
-    virtual void attack(creature another);
+    virtual void attack(creature another);//1 - если убил существо
 
-    virtual bool get_damage(creature another);
+    virtual unsigned int get_damage(creature another);//1 - если существо погибло
 
-    virtual bool move()
+    virtual bool move(unsigned int x, unsigned int y);
 };
 
 
