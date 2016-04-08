@@ -9,9 +9,16 @@
 
 class vampire : public undead {
 public:
-    vampire();
+    virtual void attack(creature another) {
+        if (another.alive) {
+            unsigned int regeneration = another.get_damage(*this);
+            health += regeneration;
+        }
+    }
 
-    virtual void attack(creature another);
+    vampire() {
+        health = 5;
+    }
 };
 
 
