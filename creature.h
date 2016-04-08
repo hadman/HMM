@@ -24,7 +24,7 @@ protected:
     //живо существо(1) или нет(0)
     unsigned char belong_to;//принадлежность к 1 или 2 игроку
 public:
-    creature();
+
 
     virtual void attack(creature another);//1 - если убил существо
 
