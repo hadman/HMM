@@ -6,8 +6,8 @@
 #define HMM_MAP_H
 
 #include "GameField.h"
-#include
- "creature.h"
+#include "creature.h"
+
 
 using namespace std;
 
