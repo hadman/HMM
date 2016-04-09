@@ -47,6 +47,8 @@ public:
         }
     }
 
+
+
     /*
     virtual bool creature::move(double x, double y) {
         double metrics = abs(x0 - x) + abs(y0 - y);//вычисляем расстояние до точки с текущего положения существа
