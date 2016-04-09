@@ -14,7 +14,7 @@ public:
     bool move(double x, double y) {
         bool answer;
 
-        if (!map.empty(x, y)) {//если клетка не занята другим существом
+        if (!map.empty(x, y)) {//если клетка занята другим существом, то стреляем в него
             attack(map.get_creature(x, y));
             answer = true;
         }

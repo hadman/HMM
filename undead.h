@@ -30,7 +30,8 @@ public:
         else
             return 0;
     }
-};
+
+    };
 
 
 #endif //HMM_UNDEAD_H

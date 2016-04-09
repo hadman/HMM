@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <cmath>
+#include "map.h"
 
 using namespace std;
 
@@ -87,6 +88,7 @@ public:
         }
         return answer;
     }
+
 };
 
 
