@@ -9,6 +9,8 @@
 
 class vampire : public undead {
 public:
+    friend class creature;
+
     virtual void attack(creature another) {
         if (another.alive) {
             unsigned int regeneration = another.get_damage(*this);
@@ -16,8 +18,11 @@ public:
         }
     }
 
+
     vampire() {
         health = 5;
+        x0 = 0;
+        y0 = 0;
     }
 };
 

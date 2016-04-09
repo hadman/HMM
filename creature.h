@@ -29,6 +29,10 @@ protected:
     unsigned char belong_to;//принадлежность к 1 или 2 игроку
 public:
 
+    creature() {
+        x0 = 2;
+        y0 = 1;
+    }
 
     virtual unsigned int get_damage(creature another) {
         if (defense < another.damage) {//если защита не полностью поглощает урон, то наносим урон
@@ -47,12 +51,9 @@ public:
         }
     }
 
-
-
-    /*
     virtual bool creature::move(double x, double y) {
         double metrics = abs(x0 - x) + abs(y0 - y);//вычисляем расстояние до точки с текущего положения существа
-        cout << metrics << endl;
+
         bool answer;
         if (metrics <= path_length) {//если существу хватает длины хода, то премещаем его
             answer = true;
@@ -85,7 +86,7 @@ public:
             answer = false;
         }
         return answer;
-    }*/
+    }
 };
 
 

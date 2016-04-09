@@ -1,11 +1,16 @@
 #include <iostream>
+
 #include "creature.h"
+
+#include "vampire.h"
 
 using namespace std;
 
 int main() {
 
     creature monster;
+
+    vampire vamp;
 
 
     double x, y;
