@@ -11,6 +11,7 @@
 
 using namespace std;
 
+//todo-anton написать самописный модуль, если потребуется
 class creature {
 protected:
     unsigned int health;
@@ -19,11 +20,11 @@ protected:
     //урон, наносимый существом
     unsigned int defense;
     //защита - то, сколько урона существо может предотвратить
-    double path_length;
+    unsigned int path_length;
     //длина хода
-    double x0;
+    unsigned x0;
     //абцисса координаты, на которой находится существо
-    double y0;
+    unsigned y0;
     //ордината координаты, на которой находится существо
     bool alive;
     //живо существо(1) или нет(0)
@@ -52,14 +53,14 @@ public:
         }
     }
 
-    virtual bool creature::move(double x, double y) {
-        double metrics = abs(x0 - x) + abs(y0 - y);//вычисляем расстояние до точки с текущего положения существа
+    virtual bool creature::move(unsigned int x, unsigned int y) {
+        unsigned int metrics = abs(x0 - x) + abs(y0 - y);//вычисляем расстояние до точки с текущего положения существа
 
         bool answer;
         if (metrics <= path_length) {//если существу хватает длины хода, то премещаем его
             answer = true;
 
-            if (map.empty(x, y)) {//если клетка не занята другим существом
+            if (map::is_empty(x, y)) {//если клетка не занята другим существом
                 x0 = x;
                 y0 = y;
             }
@@ -79,7 +80,7 @@ public:
                         y0 = y + 1;
                 }
 
-                attack(map.get_creature(x, y));
+                attack(map::get_creature(x, y));
 
             }
         } else {//если недостаточно длины хода

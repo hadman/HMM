@@ -11,15 +11,16 @@
 class archer : creature {
 public:
 
-    bool move(double x, double y) {
+    bool move(unsigned int x, unsigned int y) {
         bool answer;
 
-        if (!map.empty(x, y)) {//если клетка занята другим существом, то стреляем в него
-            attack(map.get_creature(x, y));
+        if (!map::is_empty(x, y)) {//если клетка занята другим существом, то стреляем в него
+            attack(map::get_creature(x, y));
             answer = true;
         }
         else {
-            double metrics = abs(x0 - x) + abs(y0 - y);//вычисляем расстояние до точки с текущего положения существа
+            unsigned int metrics =
+                    abs(x0 - x) + abs(y0 - y);//вычисляем расстояние до точки с текущего положения существа
 
             if (metrics <= path_length) {//если существу хватает длины хода, то премещаем его
                 answer = true;

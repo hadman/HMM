@@ -8,7 +8,6 @@
 #include "GameField.h"
 #include "creature.h"
 
-
 using namespace std;
 
 enum TileResource {
@@ -56,12 +55,12 @@ public:
     };
 
 
-bool isItEmpty(int x, int y) // 0 - empty; 1- not empty
+    static bool is_empty(unsigned int x, unsigned int y) // 0 - empty; 1- not empty
     {
         return m_layer3[x][y];
     }
 
-    creature get_creature();
+    static creature get_creature(double x, double y) { };
 };
 
 
