@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include <cmath>
-#include "map.h"
+//#include "map.h"
 //#include "player.h"
 
 using namespace std;

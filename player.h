@@ -14,12 +14,12 @@ using namespace std;
 class player // хранит в себе всех своих персонажей и их кол-во
 {
 
-private:
+protected:
     std::vector<creature> creatureMass; // его персонажи
     int creatureCount;                  // кол-во персонажей
     int playerNum;                      // номер игорока
 public:
-    //friend class creature;
+    friend class map;
     player(int Num) {
         playerNum = Num;
         creatureCount = 0;
