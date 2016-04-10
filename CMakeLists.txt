@@ -3,5 +3,5 @@ project(HMM)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(SOURCE_FILES main.cpp creature.h undead.h vampire.h skeleton_archer.h archer.h map.h GameField.h)
+set(SOURCE_FILES main.cpp creature.h undead.h vampire.h skeleton_archer.h archer.h map.h GameField.h player.h id.h)
 add_executable(HMM ${SOURCE_FILES})

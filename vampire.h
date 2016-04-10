@@ -9,7 +9,7 @@
 
 class vampire : public undead {
 public:
-    friend class creature;
+    //friend class creature;
 
     virtual void attack(creature another) {
         if (another.alive) {
@@ -19,10 +19,13 @@ public:
     }
 
 
-    vampire() {
+    vampire(unsigned int id) {
+        alive = true;
+        ID = id;
         health = 5;
         x0 = 0;
         y0 = 0;
+        cout << "vampire created!" << endl;
     }
 };
 

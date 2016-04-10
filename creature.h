@@ -8,12 +8,17 @@
 #include <iostream>
 #include <cmath>
 #include "map.h"
+//#include "player.h"
 
 using namespace std;
 
 //todo-anton написать самописный модуль, если потребуется
+
+
 class creature {
 protected:
+    unsigned int ID;
+    // уникальный номе персонажа
     unsigned int health;
     //количество очков здоровья
     unsigned int damage;
@@ -30,11 +35,17 @@ protected:
     //живо существо(1) или нет(0)
     unsigned char belong_to;//принадлежность к 1 или 2 игроку
 public:
+    friend class player;
+
+    friend class undead;
+
+    friend class vampire;
 
     creature() {
         x0 = 2;
         y0 = 1;
     }
+
 
     virtual unsigned int get_damage(creature another) {
         if (defense < another.damage) {//если защита не полностью поглощает урон, то наносим урон
@@ -53,14 +64,18 @@ public:
         }
     }
 
-    virtual bool creature::move(unsigned int x, unsigned int y) {
+    unsigned int get_id() {
+        return ID;
+    }
+
+    virtual bool move(unsigned int x, unsigned int y) {
         unsigned int metrics = abs(x0 - x) + abs(y0 - y);//вычисляем расстояние до точки с текущего положения существа
 
         bool answer;
         if (metrics <= path_length) {//если существу хватает длины хода, то премещаем его
             answer = true;
 
-            if (map::is_empty(x, y)) {//если клетка не занята другим существом
+            if (true) {//если клетка не занята другим существом // map::is_empty(x, y)
                 x0 = x;
                 y0 = y;
             }
@@ -80,7 +95,7 @@ public:
                         y0 = y + 1;
                 }
 
-                attack(map::get_creature(x, y));
+                //attack(map::get_creature(x, y));
 
             }
         } else {//если недостаточно длины хода

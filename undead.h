@@ -15,6 +15,7 @@ class undead : public creature {
 protected:
     unsigned int death_aura;//после убийства нежити, противнику наносится урон, равный death aura
 public:
+
     virtual unsigned int get_damage(creature another) {
         if (defense < another.damage) {//если защита не полностью поглощает урон, то наносим урон
             unsigned int health_los = damage - defense;//потеря хп = дамаг - защита
