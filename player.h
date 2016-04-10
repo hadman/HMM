@@ -7,6 +7,9 @@
 
 #include "creature.h"
 #include <vector>
+#include <iostream>
+
+using namespace std;
 
 class player // хранит в себе всех своих персонажей и их кол-во
 {

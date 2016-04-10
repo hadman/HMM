@@ -5,9 +5,9 @@
 #ifndef HMM_MAP_H
 #define HMM_MAP_H
 
-#include <bits/stl_vector.h>
 #include "GameField.h"
 #include "creature.h"
+//#include "player.h"
 
 using namespace std;
 
@@ -24,24 +24,44 @@ enum CreatureResource {
 };
 
 class map {
-private:
-    int width;
-    int height;
-//    vector< vector<unsigned int>> map_of_id;
-    unsigned int **map_of_id;
-public:
-    map(int x, int y) {
-        width = x; // ширина карты
-        height = y; // высота карты
-        map_of_id = new unsigned int *[height];
-        unsigned int *map_of_id = new unsigned int[width];
-
-        for (int i = 0; i < x; ++i) {
-            for (int j = 0; j < y; ++j) {
-                map_of_id[i][j] = 0;
-            }
-        }
-    }
+//private:
+//    int width;
+//    int height;
+//    unsigned int **map_of_id;
+//public:
+//    map(int x, int y) // создание карты и заполнение всех полей нулями
+//    {
+//        width = x; // ширина карты
+//        height = y; // высота карты
+//
+//        map_of_id = new unsigned int *[height];
+//
+//        for (int i = 0; i < height; ++i) {
+//            map_of_id[i] = new unsigned int[width];
+//        }
+//
+//        for (int j = 0; j < height; ++j) {
+//            for (int i = 0; i < width; ++i) {
+//                map_of_id[j][i] = 0;
+//            }
+//        }
+//    }
+//    ~map() // Деструктор
+//    {
+//        for (int i = 0; i < height; ++i) {
+//            for (int j = 0; j < width; ++j) {
+//                delete[] map_of_id[i][j];
+//            }
+//        }
+//        for (int k = 0; k < height; ++k) {
+//            delete[] map_of_id[k];
+//        }
+//    }
+//    void put_1_player(player gamer) // расстановка первого игрока на карте
+//    {
+//        int x=0; // координата по ширине
+//        int y=0;
+//    }
 
 
 //    static int m_layer1[7][14] = { // куда можно наступить
