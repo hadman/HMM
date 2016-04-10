@@ -8,12 +8,11 @@
 #include "undead.h"
 #include "archer.h"
 
-class skeleton_archer : public undead {
+class skeleton_archer : public undead, public archer {
 public:
     skeleton_archer() { };
 
     friend bool archer::move();
-}
 
 };
 

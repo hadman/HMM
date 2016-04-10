@@ -27,9 +27,9 @@ protected:
     //защита - то, сколько урона существо может предотвратить
     unsigned int path_length;
     //длина хода
-    unsigned x0;
+    int x0;
     //абцисса координаты, на которой находится существо
-    unsigned y0;
+    int y0;
     //ордината координаты, на которой находится существо
     bool alive;
     //живо существо(1) или нет(0)
@@ -41,9 +41,10 @@ public:
 
     friend class vampire;
 
+    friend class map;
+
     creature() {
-        x0 = 2;
-        y0 = 1;
+
     }
 
 
@@ -68,8 +69,16 @@ public:
         return ID;
     }
 
-    virtual bool move(unsigned int x, unsigned int y) {
-        unsigned int metrics = abs(x0 - x) + abs(y0 - y);//вычисляем расстояние до точки с текущего положения существа
+    int get_x0() {
+        return x0;
+    }
+
+    int get_y0() {
+        return y0;
+    }
+
+    virtual bool move(int x, int y) {
+        int metrics = abs(x0 - x) + abs(y0 - y);//вычисляем расстояние до точки с текущего положения существа
 
         bool answer;
         if (metrics <= path_length) {//если существу хватает длины хода, то премещаем его

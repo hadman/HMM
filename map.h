@@ -47,19 +47,15 @@ public:
         }
     }
 
-    ~map() // Деструктор не работает. СОБЛЮДАЙТЕ ОСТРОЖНОСТЬ
+    ~map() // Деструктор работает.
     {
-//        for (int i = 0; i < height; ++i) {
-//            for (int j = 0; j < width; ++j) {
-//                delete[] map_of_id[i][j];
-//            }
-//        }
-//        for (int k = 0; k < height; ++k) {
-//            delete[] map_of_id[k];
-//        }
+        for (int k = 0; k < height; ++k) {
+            delete map_of_id[k];
+        }
+        delete[] map_of_id;
     }
 
-    void put_1_player(player gamer) // расстановка первого игрока на карте
+    void put_1_player(player &gamer) // расстановка первого игрока на карте
     {
         int x = 0; // координата по высоте
         int y = 0; // координата по ширине
@@ -67,7 +63,11 @@ public:
 
         while (i < gamer.creatureCount) // расставляем персонажей на карте. начиная слева сверху
         {
+            cout << "map:: getID = " << gamer.creatureMass[i].get_id() << endl;
             map_of_id[x][y] = gamer.creatureMass[i].get_id();
+            gamer.creatureMass[i].x0 = x;
+            gamer.creatureMass[i].y0 = y;
+
             i++;
             x = (x + 1) % height;
             if (x == 0) {
@@ -76,7 +76,7 @@ public:
         }
     }
 
-    void put_2_player(player gamer) // расстановка второго игрока на карте
+    void put_2_player(player &gamer) // расстановка второго игрока на карте
     {
         int x = 0; // координата по высоте
         int y = width - 1; // координата по ширине
@@ -85,6 +85,8 @@ public:
         while (i < gamer.creatureCount) // расставляем персонажей на карте. начиная слева сверху
         {
             map_of_id[x][y] = gamer.creatureMass[i].get_id();
+            gamer.creatureMass[i].x0 = x;
+            gamer.creatureMass[i].y0 = y;
             i++;
             x = (x + 1) % height;
             if (x == 0) {
@@ -102,47 +104,9 @@ public:
         }
     }
 
-
-//    static int m_layer1[7][14] = { // куда можно наступить
-//            {0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0},
-//            {0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0},
-//            {0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0},
-//            {0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0},
-//            {0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0},
-//            {0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0},
-//            {0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0},
-//    };
-//
-//    static TileResource m_layer2[7][14] = { // текстура
-//            {TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS},
-//            {TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS},
-//            {TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS},
-//            {TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS},
-//            {TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS},
-//            {TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS},
-//            {TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS, TR_GRASS}
-//    };
-//
-//    static int m_layer3[7][14] = { // находится ли на клетке какой-либо персонаж
-//            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-//            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-//            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-//            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-//            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0},
-//            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-//            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2}
-//    };
-
-
-//    static bool is_empty(unsigned int x, unsigned int y) // 0 - empty; 1- not empty
-//    {
-//        return m_layer3[x][y];
-//    }
-
-    static unsigned int get_creature(unsigned int x, unsigned int y)
+    unsigned int get_creature_ID(int x, int y) // возвращает ID персонажа в клетке.
     {
-
-        return 0;
+        return map_of_id[x - 1][y - 1];
     };
 };
 
