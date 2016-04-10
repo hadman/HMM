@@ -48,31 +48,28 @@ int main() {
     cout << "***********" << endl;
 
 
-    player1.addCreature(vamp);
-    player1.addCreature(vamp2);
-//    player1.addCreature(vamp3);
-//    player1.addCreature(vamp4);
-//    player1.addCreature(vamp5);
-//    player1.addCreature(vamp6);
-//    player1.addCreature(vamp7);
-//
-//    player2.addCreature(vamp8);
-//    player2.addCreature(vamp9);
-//    player2.addCreature(vamp10);
-//    player2.addCreature(vamp11);
+    player1.addCreature(&vamp);
+    player1.addCreature(&vamp2);
+    player1.addCreature(&vamp3);
+    player1.addCreature(&vamp4);
+    player1.addCreature(&vamp5);
+    player1.addCreature(&vamp6);
+    player1.addCreature(&vamp7);
+
+    player2.addCreature(&vamp8);
+    player2.addCreature(&vamp9);
+    player2.addCreature(&vamp10);
+    player2.addCreature(&vamp11);
 
     cout << "***********" << endl;
 
 
     MAP.put_1_player(player1); // расстановка первого игрока на карте
-//    MAP.put_2_player(player2); // расстановка второго игрока на карте
+    MAP.put_2_player(player2); // расстановка второго игрока на карте
 
     MAP.print_map();
 
-    cout << "what is in point? " << MAP.get_creature_ID(2, 2) << endl;
-    cout << vamp.get_x0() << " " << vamp.get_y0() << endl;
-    cout << player1.creatureMass[0].get_x0() << " " << player1.creatureMass[0].get_y0() << endl;
-
+    cout << "what is in point? " << MAP.get_creature_ID(1, 1) << endl;
 
 //    double x, y;
 //

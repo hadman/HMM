@@ -15,35 +15,32 @@ class player // хранит в себе всех своих персонаже�
 {
 
 protected:
-    //std::vector<creature> creatureMass; // его персонажи
+    creature **creatureMass;            // массив указателей на его персонажей
     int creatureCount;                  // кол-во персонажей
     int playerNum;                      // номер игорока
 public:
-    //std::vector<creature> creatureMass; // его персонажи
-    creature *creatureMass;
-
     friend class map;
     player(int Num) {
         playerNum = Num;
         creatureCount = 0;
     }
 
-    bool addCreature(creature &addCr) // добавление персонажа игроку
+    bool addCreature(creature *addCr) // добавление персонажа игроку
     {
-        if (addCr.alive == true) {
+        if (addCr->alive == true) {
 
 
-            creature *tmp = new creature[creatureCount];
+            creature **tmp = new creature *[creatureCount];
             for (int i = 0; i < creatureCount; ++i) {
                 tmp[i] = creatureMass[i];
             }
             delete[] creatureMass;
-            creatureMass = new creature[creatureCount + 1];
+            creatureMass = new creature *[creatureCount + 1];
             for (int i = 0; i < creatureCount; ++i) {
                 creatureMass[i] = tmp[i];
             }
             creatureMass[creatureCount] = addCr;
-            addCr.y0 = 1488;
+            //addCr->y0 = 1488;
             creatureCount++;
             //delete[] tmp;
 

@@ -63,10 +63,9 @@ public:
 
         while (i < gamer.creatureCount) // расставляем персонажей на карте. начиная слева сверху
         {
-            cout << "map:: getID = " << gamer.creatureMass[i].get_id() << endl;
-            map_of_id[x][y] = gamer.creatureMass[i].get_id();
-            gamer.creatureMass[i].x0 = x;
-            gamer.creatureMass[i].y0 = y;
+            map_of_id[x][y] = gamer.creatureMass[i]->get_id();
+            gamer.creatureMass[i]->x0 = x;
+            gamer.creatureMass[i]->y0 = y;
 
             i++;
             x = (x + 1) % height;
@@ -84,9 +83,9 @@ public:
 
         while (i < gamer.creatureCount) // расставляем персонажей на карте. начиная слева сверху
         {
-            map_of_id[x][y] = gamer.creatureMass[i].get_id();
-            gamer.creatureMass[i].x0 = x;
-            gamer.creatureMass[i].y0 = y;
+            map_of_id[x][y] = gamer.creatureMass[i]->get_id();
+            gamer.creatureMass[i]->x0 = x;
+            gamer.creatureMass[i]->y0 = y;
             i++;
             x = (x + 1) % height;
             if (x == 0) {
