@@ -14,7 +14,6 @@ using namespace std;
 
 //todo-anton написать самописный модуль, если потребуется
 
-
 class creature {
 protected:
     unsigned int ID;
@@ -84,7 +83,7 @@ public:
         if (metrics <= path_length) {//если существу хватает длины хода, то премещаем его
             answer = true;
 
-            if (true) {//если клетка не занята другим существом // map::is_empty(x, y)
+            if (true) {//если клетка не занята другим существом // MAP.get_creature_ID(x, y)
                 x0 = x;
                 y0 = y;
             }

@@ -5,7 +5,6 @@
 #ifndef HMM_MAP_H
 #define HMM_MAP_H
 
-#include "GameField.h"
 #include "creature.h"
 //#include "player.h"
 
@@ -23,6 +22,7 @@ enum CreatureResource {
     CR_GNOME
 };
 
+class creature;
 class map {
 private:
     int width;

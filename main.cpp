@@ -1,10 +1,12 @@
 #include <iostream>
 
-#include "creature.h"
-
-#include "vampire.h"
+//#include "creature.h"
 #include "player.h"
+//#include "map.h"
+#include "vampire.h"
+
 #include "map.h"
+#include "the_game.h"
 #include "id.h" // генерация уникальных id
 
 using namespace std;
@@ -68,8 +70,16 @@ int main() {
     MAP.put_2_player(player2); // расстановка второго игрока на карте
 
     MAP.print_map();
+    int pos[2];
 
     cout << "what is in point? " << MAP.get_creature_ID(1, 1) << endl;
+
+    the_game GAME(player1, player2, MAP);
+    GAME.make_game_mass(player1, player2);
+    GAME.print_mas();
+
+//    player1.input_position(pos);
+//    cout << "pos.x = " << pos[0] << " pos.y = " << pos[1] << endl;
 
 //    double x, y;
 //

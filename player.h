@@ -5,21 +5,25 @@
 #ifndef HMM_PLAYER_H
 #define HMM_PLAYER_H
 
+
 #include "creature.h"
 #include <vector>
 #include <iostream>
 
-using namespace std;
 
+using namespace std;
 class player // хранит в себе всех своих персонажей и их кол-во
 {
 
 protected:
-    creature **creatureMass;            // массив указателей на его персонажей
+    //creature **creatureMass;            // массив указателей на его персонажей
+    vector<creature *> creatureMass;
     int creatureCount;                  // кол-во персонажей
     int playerNum;                      // номер игорока
 public:
     friend class map;
+
+    friend class the_game;
     player(int Num) {
         playerNum = Num;
         creatureCount = 0;
@@ -30,22 +34,23 @@ public:
         if (addCr->alive == true) {
 
 
-            creature **tmp = new creature *[creatureCount];
-            for (int i = 0; i < creatureCount; ++i) {
-                tmp[i] = creatureMass[i];
-            }
-            delete[] creatureMass;
-            creatureMass = new creature *[creatureCount + 1];
-            for (int i = 0; i < creatureCount; ++i) {
-                creatureMass[i] = tmp[i];
-            }
-            creatureMass[creatureCount] = addCr;
-            //addCr->y0 = 1488;
+//            creature **tmp = new creature *[creatureCount];
+//            for (int i = 0; i < creatureCount; ++i) {
+//                tmp[i] = creatureMass[i];
+//            }
+//            delete[] creatureMass;
+//            creatureMass = new creature *[creatureCount + 1];
+//            for (int i = 0; i < creatureCount; ++i) {
+//                creatureMass[i] = tmp[i];
+//            }
+//            creatureMass[creatureCount] = addCr;
+
+
+            creatureMass.push_back(addCr);
             creatureCount++;
             //delete[] tmp;
 
 
-            //creatureMass.push_back(addCr);
 
             if (playerNum == 1) {
                 cout << "smth add to first player" << endl;
@@ -56,6 +61,56 @@ public:
         } else {
             return false;
         }
+    }
+
+    bool delCreature(creature *addCr) // ищем персонажа по id и удаляем
+    {
+        for (int i = 0; i < creatureCount; ++i) {
+            if (creatureMass[i]->get_id() == addCr->get_id()) {
+                creatureMass.erase(creatureMass.begin() + i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool input_position(int mas[]) {
+        bool tmp;
+        int x = -1;
+        int y = -1;
+        cout << "Do  you want to do a motion? 0 - don't want; Else - want; ";
+        cin >> tmp;
+        if (tmp == 0) {
+            mas[0] = x;
+            mas[1] = y;
+            return 0;
+        } else {
+//            while(!(cin >> x) || cin.get() != '\n')
+//            {
+//                cin.clear();
+//                while(cin.get() != '\n');
+//                cout << "Please input X>0" << endl;
+//            }
+//            //cout << "Please input Y>0 ";
+//            while(!(cin >> y))
+//            {
+//                cin.clear();
+//                while(cin.get() != '\n');
+//                cout << "Please input Y>0" << endl;
+//            }
+            cout << "x = ";
+            cin >> x;
+            cout << "y = ";
+            cin >> y;
+            mas[0] = x;
+            mas[1] = y;
+            return 1;
+        }
+
+    }
+
+    int count_of_creatures() {
+        return creatureCount;
     }
 };
 
