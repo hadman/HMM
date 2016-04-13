@@ -120,7 +120,13 @@ public:
 
 
     int count_of_creatures() {
-        return creatureCount;
+        int i = 0;
+        for (int j = 0; j < creatureCount; ++j) {
+            if (creatureMass[j]->alive == true) {
+                i++;
+            }
+        }
+        return i;
     }
 
     bool is_this_creature_of_this_player(unsigned int creature_id) // проверяет, есть ли персонаж с таким номер у игрока

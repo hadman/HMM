@@ -21,6 +21,8 @@ public:
         path_length = 9;
         ID = id;
         health = 5;
+        damage = 12;
+        defense = 9;
         //cout << "vampire created!" << endl;
     }
 };

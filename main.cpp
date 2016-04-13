@@ -52,16 +52,16 @@ int main() {
 
     player1.addCreature(&vamp);
     player1.addCreature(&vamp2);
-    player1.addCreature(&vamp3);
-    player1.addCreature(&vamp4);
-    player1.addCreature(&vamp5);
-    player1.addCreature(&vamp6);
-    player1.addCreature(&vamp7);
+//    player1.addCreature(&vamp3);
+//    player1.addCreature(&vamp4);
+//    player1.addCreature(&vamp5);
+//    player1.addCreature(&vamp6);
+//    player1.addCreature(&vamp7);
 
     player2.addCreature(&vamp8);
-    player2.addCreature(&vamp9);
-    player2.addCreature(&vamp10);
-    player2.addCreature(&vamp11);
+//    player2.addCreature(&vamp9);
+//    player2.addCreature(&vamp10);
+//    player2.addCreature(&vamp11);
 
     cout << "***********" << endl;
 
