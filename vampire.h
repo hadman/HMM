@@ -18,9 +18,10 @@ public:
 
     vampire(unsigned int id) {
         alive = true;
+        path_length = 9;
         ID = id;
         health = 5;
-        cout << "vampire created!" << endl;
+        //cout << "vampire created!" << endl;
     }
 };
 

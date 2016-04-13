@@ -95,7 +95,14 @@ public:
     }
 
     void print_map() {
+        cout << "x/y ";
+        for (int k = 0; k < width; ++k) {
+            cout << k << " ";
+        }
+        cout << endl;
+        cout << endl;
         for (int i = 0; i < height; ++i) {
+            cout << i << "   ";
             for (int j = 0; j < width; ++j) {
                 cout << map_of_id[i][j] << " ";
             }
@@ -107,6 +114,37 @@ public:
     {
         return map_of_id[x - 1][y - 1];
     };
+
+    bool can_creature_move_to_point(int x, int y,
+                                    creature creature1) // проверяет находится ли заданная координата в зоне досягаемости хода персонажа
+    {
+        if ((abs(creature1.x0 - x) >= creature1.path_length) || (abs(creature1.y0 - y) >= creature1.path_length)) {
+            return false;
+        }
+        return true;
+    }
+
+    bool is_this_point_empty(int x, int y) // проверяет постая ли клетка. Пустая: true; Не пустая: false
+    {
+        if (map_of_id[x][y] == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    unsigned int get_id_of_point(int x, int y) {
+        return map_of_id[x][y];
+    }
+
+    void move(creature *creature1, int new_x, int new_y) // перемещает персонажа в указанную клетку
+    {
+        map_of_id[creature1->x0][creature1->y0] = 0; // удалили из прошлой клетки
+        map_of_id[new_x][new_y] = creature1->ID;     // преместили в новую клетку
+        creature1->x0 = new_x;
+        creature1->y0 = new_y;
+    }
+
 };
 
 

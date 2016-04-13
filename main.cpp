@@ -74,9 +74,9 @@ int main() {
 
     cout << "what is in point? " << MAP.get_creature_ID(1, 1) << endl;
 
+
     the_game GAME(player1, player2, MAP);
-    GAME.make_game_mass(player1, player2);
-    GAME.print_mas();
+    GAME.start(player1, player2, MAP);
 
 //    player1.input_position(pos);
 //    cout << "pos.x = " << pos[0] << " pos.y = " << pos[1] << endl;
