@@ -31,7 +31,7 @@ private:
         }
     }
 
-    bool is_this_creature_of_this_game(unsigned int creature_id) {
+    bool is_this_creature_of_this_game(unsigned int creature_id) { // проверяем учавствует ли персонаж с таким id в игре
         for (int i = 0; i < game_creature_Mas_Count; ++i) {
             if (game_creature_Mas[i]->get_id() == creature_id) {
                 return true;
@@ -49,7 +49,6 @@ private:
     }
 public:
 
-
     the_game(player &gamer1, player &gamer2, map &MAP) //
     {
         make_game_mass(gamer1, gamer2);
@@ -63,6 +62,11 @@ public:
         int inp_y;
         bool is_it_enemy; // true: можно ударить. false: нельзя ударить
 
+        int tmp_x; // позиция, с которой можно ударить персонажа
+        int tmp_y;
+
+//        bool is_point_empty; // true: клетка пустая. false: не пустая
+
         creature *tmp_creature; // буфер временнго персонажа
 
         while (gamer1.count_of_creatures() > 0 &&
@@ -72,7 +76,7 @@ public:
             {
                 cout << "ID of creature: " << game_creature_Mas[i]->ID << endl;
                 do {
-                    dont_kill_friend:;
+                    repeat_input:;
                     if (game_creature_Mas[i]->belong_to == 1) // ходит первый игрок
                     {
                         cout << "the course of player I:" << endl;
@@ -82,36 +86,101 @@ public:
                         gamer2.input_position(inp_x, inp_y);
                     }
 
-
-                    if (!MAP.can_creature_move_to_point(inp_x, inp_y,
-                                                        *game_creature_Mas[i])) // проверяем в зоне досягаемости ли введенные координаты
+                    if (!(MAP.is_this_point_empty(inp_x, inp_y))) // если клетка непустая
                     {
-                        cout << "ERROR: this creature can't move so far" << endl;
-                    } else {
-                        if (MAP.is_this_point_empty(inp_x, inp_y)) // если клетка пустая
+//                        is_point_empty = false; // клетка непустая
+                        tmp_creature = return_creature_by_id(
+                                MAP.get_id_of_point(inp_x, inp_y)); // создаем копию персонажа из указанной клетки
+                        if (game_creature_Mas[i]->belong_to ==
+                            tmp_creature->belong_to)          // если это друг НУЖНО ДОБАВИТЬ ВОЗМОЖНОСТЬ ЛЕЧИТЬ ДРУЗЕЙ
                         {
-                            MAP.move(game_creature_Mas[i], inp_x,
-                                     inp_y); // переместить персонажа на карте. и присвоить ему новые координаты
+                            cout << "ERROR: this creature is your friend" << endl;
+                            goto repeat_input;
                         } else {
-                            if (is_this_creature_of_this_game(
-                                    MAP.get_id_of_point(inp_x, inp_y))) // проверяем есть ли в этой клетке персонаж
+                            if (game_creature_Mas[i]->attack_arrow(*tmp_creature)) // если этот персонаж умеет стрелять
                             {
-                                tmp_creature = return_creature_by_id(
-                                        MAP.get_id_of_point(inp_x,
-                                                            inp_y)); // создаем копию персонажа из указанной клетки
-                                if (game_creature_Mas[i]->belong_to == tmp_creature->belong_to) {
-                                    cout << "ERROR: this creature is your friend" << endl;
-                                    goto dont_kill_friend;
-                                } else {
-                                    cout << "attack = " << tmp_creature->get_id() << endl;
-//                                    game_creature_Mas[i]->attack(*tmp_creature);
-                                    MAP.attack(game_creature_Mas[i], tmp_creature);
+                                cout << "ATTACK: I short a " << tmp_creature->ID << endl;
+                            } else // попытаемся подойти к нему
+                            {
+                                if (!MAP.can_creature_move_to_point(inp_x, inp_y,
+                                                                    *game_creature_Mas[i])) // проверяем в зоне досягаемости ли введенные координаты
+                                {
+                                    cout << "ERROR: this creature can't move so far" << endl;
+                                    goto repeat_input;
+                                } else // если персонаж в зоне досягаемости
+                                {
+                                    if ((abs(game_creature_Mas[i]->x0 - inp_x) <= 1) &&
+                                        // проверяем находится ли утакуевое существо уже в радиусе одной клетки
+                                        (abs(game_creature_Mas[i]->y0 - inp_y) <= 1)) {
+                                        cout << "attackHere = " << tmp_creature->get_id() <<
+                                        endl; // атакуем текущим персонажем персонажа в клетке
+                                        MAP.attack(game_creature_Mas[i], tmp_creature);
+                                    } else {
+                                        if (MAP.search_empty_point(game_creature_Mas[i], tmp_creature, tmp_x,
+                                                                   tmp_y)) // проверяет можно ли подойти к существу вплотную
+                                        {
+                                            cout << "attackThere = " << tmp_creature->get_id() <<
+                                            endl; // атакуем текущим персонажем персонажа в клетке
+                                            MAP.move(game_creature_Mas[i], tmp_x, tmp_y);
+                                            MAP.attack(game_creature_Mas[i], tmp_creature);
+                                        } else {
+                                            cout << "ERROR: you can't attack this creature" << endl;
+                                            goto repeat_input;
+                                        }
+                                    }
                                 }
                             }
                         }
+
+                    } else // тогда в нее нужно походить
+                    {
+                        if (!MAP.can_creature_move_to_point(inp_x, inp_y,
+                                                            *game_creature_Mas[i])) // проверяем в зоне досягаемости ли введенные координаты
+                        {
+                            cout << "ERROR: this creature can't move so far" << endl;
+                            goto repeat_input;
+                        } else {
+                            MAP.move(game_creature_Mas[i], inp_x, inp_y);
+                        }
+//                        is_point_empty = true; // клетка пустая
                     }
-                } while (!(MAP.can_creature_move_to_point(inp_x, inp_y,
-                                                          *game_creature_Mas[i]))); // просив игрока вводить координаты до тех пор, пока они не попадут в радиус досягаемости
+
+
+
+
+
+
+
+
+
+//                    if (!MAP.can_creature_move_to_point(inp_x, inp_y,
+//                                                        *game_creature_Mas[i])) // проверяем в зоне досягаемости ли введенные координаты
+//                    {
+//                        cout << "ERROR: this creature can't move so far" << endl;
+//                        goto repeat_input;
+//                    } else {
+//                        if (MAP.is_this_point_empty(inp_x, inp_y)) // если клетка пустая
+//                        {
+//                            MAP.move(game_creature_Mas[i], inp_x,
+//                                     inp_y); // переместить персонажа на карте. и присвоить ему новые координаты
+//                        } else {
+//                            if (is_this_creature_of_this_game(
+//                                    MAP.get_id_of_point(inp_x, inp_y))) // проверяем есть ли в этой клетке персонаж
+//                            {
+//                                tmp_creature = return_creature_by_id(
+//                                        MAP.get_id_of_point(inp_x,
+//                                                            inp_y)); // создаем копию персонажа из указанной клетки
+//                                if (game_creature_Mas[i]->belong_to == tmp_creature->belong_to) {
+//                                    cout << "ERROR: this creature is your friend" << endl;
+//                                    goto repeat_input;
+//                                } else {
+//                                    cout << "attack = " << tmp_creature->get_id() << endl; // атакуем текущим персонажем персонажа в клетке
+//                                    MAP.attack(game_creature_Mas[i], tmp_creature);
+//                                }
+//                            }
+//                        }
+//                    }
+                } while (false);
 
                 MAP.print_map();
 
@@ -121,11 +190,6 @@ public:
         cout << "RRRAAAUND!!!" << endl;
     }
 
-//    void print_mas() {
-//        for (int i = 0; i < game_creature_Mas.size(); ++i) {
-//            cout << game_creature_Mas[i]->get_id() << endl;
-//        }
-//    }
 
 };
 

@@ -150,14 +150,40 @@ public:
         {
             cout << "suka ya ubil ego!!!" << endl;
             move(attack_creature, attacked_creature->x0, attacked_creature->y0); // встаем на его место
-        } else {
-            move(attack_creature, attacked_creature->x0, attacked_creature->y0 - 1); // встаем на соседнюю клетку
         }
     }
 
     void del_from_map(creature *creature1) // удаление персонажа с карты
     {
         map_of_id[creature1->x0][creature1->y0] = 0;
+    }
+
+    bool search_empty_point(creature *creature1, creature *creature2, int &x,
+                            int &y) // поиск ближайшей точки, куда может встать creature1, чтобы ударить creature2. False: creature2 нельзя ударить
+    {
+        double distance = sqrt(width * width + height * height) + 10; // расстояние по умолчанию
+        bool found = false;                                   // проверка найдена ли хотя бы одна свободаная клетка
+        for (int i = 0; i < height; ++i) {
+            for (int j = 0; j < width; ++j) {
+                if ((map_of_id[i][j] == 0) &&                                        // смотрит чтобы клетка была пустой
+                    (abs(creature1->x0 - i) < creature1->path_length) &&
+                    // смотрит чтобы клетка была в зоне удара creature1
+                    (abs(creature1->y0 - j) < creature1->path_length) &&
+                    (abs(creature2->x0 - i) <= 1) &&
+                    // смотрит чтобы клетка была соседней с creature2
+                    (abs(creature2->y0 - j) <= 1) &&
+                    (creature1->distance_to_point(i, j) <
+                     distance))               // смотрит чтобы расстояние до клетки было меньше чем в предыдущем случае
+                {
+                    x = i;                                          // сохраняем координаты
+                    y = j;
+                    cout << "new x = " << x << " new y = " << y << endl;
+                    distance = creature1->distance_to_point(i, j);    // сохраняем расстояние
+                    found = true;
+                }
+            }
+        }
+        return found;
     }
 };
 

@@ -40,6 +40,8 @@ public:
 
     friend class vampire;
 
+    friend class skeleton_archer;
+
     friend class map;
 
     friend class the_game;
@@ -51,8 +53,9 @@ public:
 
     virtual int get_damage(creature &another) {
         if (defense < another.damage) {//если защита не полностью поглощает урон, то наносим урон
-            int health_los = damage - defense;//потеря хп = дамаг - защита
+            int health_los = another.damage - defense;//потеря хп = дамаг - защита
             health = health - health_los;//уменьшаем здоровье в соответствии с нанесённым уроном
+            cout << ID << " lose " << health_los << " hp" << endl;
             if (health <= 0) {
                 alive = false;
             }
@@ -68,6 +71,11 @@ public:
         }
     }
 
+    virtual bool attack_arrow(creature &another) // стрельба из лука. по умолчанию существо не струляет из лука
+    {
+        return false;
+    }
+
     unsigned int get_id() {
         return ID;
     }
@@ -79,6 +87,12 @@ public:
     int get_y0() {
         return y0;
     }
+
+    double distance_to_point(int x, int y) // возвращает расстояние от точки (x,y) до персонажа
+    {
+        return sqrt(abs(x - x0) + abs(y - y0));
+    }
+
 
     virtual bool move(int x, int y) // ничего не проверяет. просто переносит персонажа в нужную координату
     {

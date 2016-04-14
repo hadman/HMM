@@ -9,16 +9,17 @@
 
 class vampire : public undead {
 public:
-    virtual void attack(creature another) {
+    virtual void attack(creature &another) {
         if (another.alive) {
-            unsigned int regeneration = another.get_damage(*this);
+            int regeneration = another.get_damage(*this);
             health += regeneration;
+            cout << ID << " got " << regeneration << " hp" << endl;
         }
     }
 
     vampire(unsigned int id) {
         alive = true;
-        path_length = 9;
+        path_length = 10;
         ID = id;
         health = 5;
         damage = 12;
