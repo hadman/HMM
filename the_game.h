@@ -92,10 +92,16 @@ public:
                         tmp_creature = return_creature_by_id(
                                 MAP.get_id_of_point(inp_x, inp_y)); // создаем копию персонажа из указанной клетки
                         if (game_creature_Mas[i]->belong_to ==
-                            tmp_creature->belong_to)          // если это друг НУЖНО ДОБАВИТЬ ВОЗМОЖНОСТЬ ЛЕЧИТЬ ДРУЗЕЙ
+                            tmp_creature->belong_to)          // если это друг
                         {
                             cout << "ERROR: this creature is your friend" << endl;
-                            goto repeat_input;
+                            if (game_creature_Mas[i]->add_hp(
+                                    *tmp_creature)) // если этот персонаж умеет восстанавливать здоровье
+                            {
+                                cout << "ATTACK: I add hp to " << tmp_creature->ID << endl;
+                            } else {
+                                goto repeat_input;
+                            }
                         } else {
                             if (game_creature_Mas[i]->attack_arrow(*tmp_creature)) // если этот персонаж умеет стрелять
                             {

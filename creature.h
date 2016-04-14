@@ -33,6 +33,7 @@ protected:
     bool alive;
     //живо существо(1) или нет(0)
     int belong_to;//принадлежность к 1 или 2 игроку
+    int count_hp; // сколько здоровья вылечивает
 public:
     friend class player;
 
@@ -72,6 +73,11 @@ public:
     }
 
     virtual bool attack_arrow(creature &another) // стрельба из лука. по умолчанию существо не струляет из лука
+    {
+        return false;
+    }
+
+    virtual bool add_hp(creature &another) // Восстановление здоровья персонажа. по умолчанию существо не лечит
     {
         return false;
     }

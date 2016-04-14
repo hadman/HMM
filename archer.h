@@ -11,6 +11,14 @@
 class archer : creature {
 public:
 
+    virtual bool attack_arrow(creature &another) // стрельба из лука.
+    {
+        if (another.alive) {
+            another.get_damage(*this);
+        }
+        return true;
+    }
+
     bool move(unsigned int x, unsigned int y) {
 //        bool answer;
 //

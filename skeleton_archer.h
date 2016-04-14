@@ -19,13 +19,7 @@ public:
         defense = 5;
     };
 
-    virtual bool attack_arrow(creature &another) // стрельба из лука.
-    {
-//        if (another.alive) {
-//            another.get_damage(*this);
-//        }
-        return true;
-    }
+
 
 //    friend bool archer::move();
 
