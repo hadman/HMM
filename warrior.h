@@ -8,6 +8,8 @@
 class warrior : public virtual creature // виртуальное наследование для решения проблемы ромбовидного наследования
 {
 public:
+
+
     virtual bool attack(creature &another) {  // возможность атаковать. это существо может атаковать
         if (another.alive) {
             another.get_damage(*this);
