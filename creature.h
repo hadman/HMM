@@ -33,7 +33,6 @@ protected:
     bool alive;
     //живо существо(1) или нет(0)
     int belong_to;//принадлежность к 1 или 2 игроку
-    int count_hp; // сколько здоровья вылечивает
 public:
     friend class player;
 

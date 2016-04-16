@@ -11,6 +11,10 @@
 class archer : public virtual creature {
 public:
 
+    friend class skeleton_archer;
+
+    friend class elf;
+
     virtual bool attack_arrow(creature &another) // стрельба из лука.
     {
         if (another.alive) {
