@@ -22,8 +22,6 @@ protected:
     // начальное кол-во здоровья
     int health;
     //количество очков здоровья
-    int damage;
-    //урон, наносимый существом
     int defense;
     //защита - то, сколько урона существо может предотвратить
     int path_length;
@@ -37,6 +35,7 @@ protected:
     int belong_to;
     //принадлежность к 1 или 2 игроку
     int count_hp; // сколько здоровья вылечивает
+    int damage;
 public:
     friend class player;
 

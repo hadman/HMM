@@ -61,7 +61,7 @@ int main() {
 
     cout << "***********" << endl;
 
-    player1.addCreature(&vamp);
+    player1.addCreature(&tent);
     player1.addCreature(&vamp2);
 //    player1.addCreature(&vamp2);
 //    player1.addCreature(&vamp3);

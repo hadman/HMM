@@ -6,8 +6,17 @@
 
 class warrior : public virtual creature // виртуальное наследование для решения проблемы ромбовидного наследования
 {
+private:
+//    int damage;
+    //урон, наносимый существом
 public:
+    friend class elf;
 
+    friend class vampire;
+
+    friend class monk;
+
+    friend class skeleton_archer;
 
     virtual bool attack(creature *attacked_creature, map &MAP) {  // возможность атаковать. это существо может атаковать
         if (attacked_creature->alive) {

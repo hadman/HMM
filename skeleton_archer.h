@@ -15,6 +15,7 @@ public:
         health = 5;
             start_hp = health;
         damage = 10;
+        arrow_damage = 14;
         defense = 5;
     };
 

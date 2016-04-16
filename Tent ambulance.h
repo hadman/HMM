@@ -15,9 +15,8 @@ public:
         alive = true;
         path_length = 0; // не может ходить
         ID = id;
-        health = 50;
+            health = 7;
             start_hp = health;
-        damage = 0; // нет урона
         defense = 0; // нет защиты
         count_hp = 5; // сколько здоровья вылечивает
     }

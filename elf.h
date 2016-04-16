@@ -6,7 +6,10 @@
 #define HMM_ELF_H
 
 
-class elf : public archer, public warrior {
+#include "archer.h"
+#include "warrior.h"
+
+class elf : public warrior, public archer {
 public:
     elf(unsigned int id) {
         alive = true;
@@ -15,6 +18,7 @@ public:
         health = 5;
             start_hp = health;
         damage = 12;
+        arrow_damage = 14;
         defense = 9;
     }
 };
