@@ -1,6 +1,4 @@
-//
-// Created by musta on 15.04.2016.
-//
+
 
 #ifndef HMM_WARRIOR_H
 #define HMM_WARRIOR_H

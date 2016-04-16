@@ -68,8 +68,8 @@ int main() {
     cout << "***********" << endl;
 
 
-    MAP.put_1_player(player1); // расстановка первого игрока на карте
-    MAP.put_2_player(player2); // расстановка второго игрока на карте
+    player1.put_creatures_on_map(); // расстановка первого игрока на карте
+    player2.put_creatures_on_map(); // расстановка второго игрока на карте
 
     MAP.print_map();
     int pos[2];

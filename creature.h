@@ -1,13 +1,14 @@
 //
 // Created by anton on 07.04.16.
 //
-
+//данный класс отвечает за взаимодействие существ на поле боя
 #ifndef HMM_CREATURE_H
 #define HMM_CREATURE_H
 
 #include <iostream>
 #include <cmath>
-//#include "map.h"
+#include "map.h"
+
 //#include "player.h"
 
 using namespace std;
@@ -32,8 +33,10 @@ protected:
     //ордината координаты, на которой находится существо
     bool alive;
     //живо существо(1) или нет(0)
-    int belong_to;//принадлежность к 1 или 2 игроку
+    int belong_to;
+    //принадлежность к 1 или 2 игроку
     int count_hp; // сколько здоровья вылечивает
+    int arrow_damage;//урон, наносимый стрелком, у остальных будет равен 0
 public:
     friend class player;
 
@@ -51,18 +54,14 @@ public:
 
     friend class the_game;
 
-    creature() {
-
-    }
-
-
     virtual int get_damage(creature &another) {
         if (defense < another.damage) {//если защита не полностью поглощает урон, то наносим урон
             int health_los = another.damage - defense;//потеря хп = дамаг - защита
             health = health - health_los;//уменьшаем здоровье в соответствии с нанесённым уроном
             cout << ID << " lose " << health_los << " hp" << endl;
-            if (health <= 0) {
+            if (health <= 0) {//если существо умерло
                 alive = false;
+                map::del_from_map(*this);
             }
             return health_los; // возвращаем для вампира
         }
@@ -70,78 +69,25 @@ public:
             return 0;
     }
 
-    virtual bool attack(creature &another) {  // возможность атаковать. по умолчанию существо не атакует
-        return false;
-    }
+    virtual bool add_hp(creature &another); // Восстановление здоровья персонажа. по умолчанию существо не лечит
 
-    virtual bool attack_arrow(creature &another) // стрельба из лука. по умолчанию существо не струляет из лука
-    {
-        return false;
-    }
-
-    virtual bool add_hp(creature &another) // Восстановление здоровья персонажа. по умолчанию существо не лечит
-    {
-        return false;
-    }
 
     unsigned int get_id() {
         return ID;
     }
 
-    int get_x0() {
-        return x0;
-    }
-
-    int get_y0() {
-        return y0;
-    }
-
-    double distance_to_point(int x, int y) // возвращает расстояние от точки (x,y) до персонажа
+    void move(int new_x, int new_y) // перемещает персонажа в указанную клетку
     {
-        return sqrt(abs(x - x0) + abs(y - y0));
+        map::map_of_id[x0][y0] = 0; // удалили из прошлой клетки
+        map::map_of_id[new_x][new_y] = ID;     // преместили в новую клетку
+        x0 = new_x;
+        y0 = new_y;
     }
 
+    bool attack(creature *attacked_creature) {
+        attacked_creature->get_damage(*this);
 
-    virtual bool move(int x, int y) // ничего не проверяет. просто переносит персонажа в нужную координату
-    {
-        x0 = x;
-        y0 = y;
-//        int metrics = abs(x0 - x) + abs(y0 - y);//вычисляем расстояние до точки с текущего положения существа
-//
-//        bool answer;
-//        if (metrics <= path_length) {//если существу хватает длины хода, то премещаем его
-//            answer = true;
-//
-//            if (true) {//если клетка не занята другим существом // MAP.get_creature_ID(x, y)
-//                x0 = x;
-//                y0 = y;
-//            }
-//            else//если клетка занята другим существом, то остановиться на предыдущей клетке и атаковать противника
-//            {
-//                if (y - y0 == 0) {//если двигаемся строго горизонтально
-//                    if (x > x0)//если двигаемся направо
-//                        x0 = x - 1;
-//                    else//если двигаемся налево
-//                        x0 = x + 1;
-//                }
-//                else {
-//                    x0 = x;
-//                    if (y > y0)//если двигаемся наверх
-//                        y0 = y - 1;
-//                    else//если двигаемся вниз
-//                        y0 = y + 1;
-//                }
-//
-//                //attack(map::get_creature(x, y));
-//
-//            }
-//        } else {//если недостаточно длины хода
-//            cout << "Too far. Creature`s path length = " << path_length << endl;
-//            answer = false;
-//        }
-//        return answer;
     }
-
 };
 
 

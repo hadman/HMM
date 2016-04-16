@@ -7,11 +7,13 @@
 
 
 #include "creature.h"
+#include "map.h"
 #include <vector>
 #include <iostream>
 
 
 using namespace std;
+
 class player // хранит в себе всех своих персонажей и их кол-во
 {
 
@@ -24,6 +26,7 @@ public:
     friend class map;
 
     friend class the_game;
+
     player(int Num) {
         playerNum = Num;
         creatureCount = 0;
@@ -118,7 +121,6 @@ public:
     };
 
 
-
     int count_of_creatures() {
         int i = 0;
         for (int j = 0; j < creatureCount; ++j) {
@@ -144,6 +146,46 @@ public:
         for (int i = 0; i < creatureCount; ++i) {
             if (creatureMass[i]->get_id() == creature_id) {
                 return creatureMass[i];
+            }
+        }
+    }
+
+    void put_creatures_on_map() {
+        if (playerNum == 1) // расстановка существ первого игрока на карте
+        {
+            int x = 0; // координата по высоте
+            int y = 0; // координата по ширине
+            int i = 0; // счетчик
+
+            while (i < creatureCount) // расставляем персонажей на карте. начиная слева сверху
+            {
+                map::map_of_id[x][y] = creatureMass[i]->get_id();
+                creatureMass[i]->x0 = x;
+                creatureMass[i]->y0 = y;
+
+                i++;
+                x = (x + 1) % map::height;
+                if (x == 0) {
+                    y++;
+                }
+            }
+        }
+        else // расстановка существ второго игрока на карте
+        {
+            int x = 0; // координата по высоте
+            int y = map::width - 1; // координата по ширине
+            int i = 0; // счетчик
+
+            while (i < creatureCount) // расставляем персонажей на карте. начиная слева сверху
+            {
+                map::map_of_id[x][y] = creatureMass[i]->get_id();
+                creatureMass[i]->x0 = x;
+                creatureMass[i]->y0 = y;
+                i++;
+                x = (x + 1) % map::height;
+                if (x == 0) {
+                    y--;
+                }
             }
         }
     }

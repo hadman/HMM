@@ -1,16 +1,20 @@
 //
 // Created by musta on 08.04.2016.
 //
+//В карте хранится информация о существах, их местоположении.
+//Она НЕ может передвигать существ, т.к. является лишь статическим отображением ситуации, происходящей на поле битвы
+//она может стереть или поставить существо на новую позицию, если существо сказало ей об этом
 
 #ifndef HMM_MAP_H
 #define HMM_MAP_H
 
 #include "creature.h"
-//#include "player.h"
+#include "player.h"
 
 using namespace std;
 
 enum TileResource {
+    //цвет поля в данной клетке
     TR_GRASS,
     TR_STONE,
     TR_DESERT
@@ -23,12 +27,18 @@ enum CreatureResource {
 };
 
 class creature;
+
 class map {
 private:
-    int width;
-    int height;
-    unsigned int **map_of_id;
+    static int width;
+    static int height;
+    static unsigned int **map_of_id;
 public:
+
+    friend class player;
+
+    friend class creature;
+
     map(int x, int y) // создание карты и заполнение всех полей нулями y- ширина. x - высота
     {
         height = x; // высота карты
@@ -47,51 +57,12 @@ public:
         }
     }
 
-    ~map() // Деструктор работает.
+    ~map() // Деструктор
     {
         for (int k = 0; k < height; ++k) {
             delete map_of_id[k];
         }
         delete[] map_of_id;
-    }
-
-    void put_1_player(player &gamer) // расстановка первого игрока на карте
-    {
-        int x = 0; // координата по высоте
-        int y = 0; // координата по ширине
-        int i = 0; // счетчик
-
-        while (i < gamer.creatureCount) // расставляем персонажей на карте. начиная слева сверху
-        {
-            map_of_id[x][y] = gamer.creatureMass[i]->get_id();
-            gamer.creatureMass[i]->x0 = x;
-            gamer.creatureMass[i]->y0 = y;
-
-            i++;
-            x = (x + 1) % height;
-            if (x == 0) {
-                y++;
-            }
-        }
-    }
-
-    void put_2_player(player &gamer) // расстановка второго игрока на карте
-    {
-        int x = 0; // координата по высоте
-        int y = width - 1; // координата по ширине
-        int i = 0; // счетчик
-
-        while (i < gamer.creatureCount) // расставляем персонажей на карте. начиная слева сверху
-        {
-            map_of_id[x][y] = gamer.creatureMass[i]->get_id();
-            gamer.creatureMass[i]->x0 = x;
-            gamer.creatureMass[i]->y0 = y;
-            i++;
-            x = (x + 1) % height;
-            if (x == 0) {
-                y--;
-            }
-        }
     }
 
     void print_map() {
@@ -116,7 +87,7 @@ public:
     };
 
     bool can_creature_move_to_point(int x, int y,
-                                    creature creature1) // проверяет находится ли заданная координата в зоне досягаемости хода персонажа
+                                    creature &creature1) // проверяет находится ли заданная координата в зоне досягаемости хода персонажа
     {
         if ((abs(creature1.x0 - x) >= creature1.path_length) || (abs(creature1.y0 - y) >= creature1.path_length)) {
             return false;
@@ -133,45 +104,19 @@ public:
         }
     }
 
+
     unsigned int get_id_of_point(int x, int y) {
         return map_of_id[x][y];
     }
 
-    void move(creature *creature1, int new_x, int new_y) // перемещает персонажа в указанную клетку
+    double distance_to_point(creature &cr, int x, int y) // возвращает расстояние от точки (x,y) до персонажа
     {
-        map_of_id[creature1->x0][creature1->y0] = 0; // удалили из прошлой клетки
-        map_of_id[new_x][new_y] = creature1->ID;     // преместили в новую клетку
-        creature1->move(new_x, new_y);
+        return sqrt(abs(x - cr.x0) + abs(y - cr.y0));
     }
 
-    bool attack(creature *attack_creature, creature *attacked_creature) {
-        bool tmp = attack_creature->attack(*attacked_creature);
-        if (tmp)
-        {
-            if (attacked_creature->alive == false)  // если атакуемый умирает
-            {
-                cout << "suka ya ubil ego!!!" << endl;
-                move(attack_creature, attacked_creature->x0, attacked_creature->y0); // встаем на его место
-            }
-        }
-        return tmp;
-    }
-
-    bool attack_arrow(creature *attack_creature, creature *attacked_creature) {
-        bool tmp = attack_creature->attack_arrow(*attacked_creature);
-        if (tmp) {
-            if (attacked_creature->alive == false)  // если атакуемый умирает
-            {
-                cout << "suka ya ubil ego iz luka!!!" << endl;
-            }
-        }
-        return tmp;
-    }
-
-
-    void del_from_map(creature *creature1) // удаление персонажа с карты
+    static void del_from_map(creature &creature1) // удаление персонажа с карты
     {
-        map_of_id[creature1->x0][creature1->y0] = 0;
+        map_of_id[creature1.x0][creature1.y0] = 0;
     }
 
     bool search_empty_point(creature *creature1, creature *creature2, int &x,
