@@ -5,7 +5,6 @@
 #ifndef HMM_ELF_H
 #define HMM_ELF_H
 
-#include "archer.h"
 
 class elf : public archer, public warrior {
 public:

@@ -5,7 +5,6 @@
 #ifndef HMM_DOCTOR_H
 #define HMM_DOCTOR_H
 
-#include "creature.h"
 
 class doctor
         : public virtual creature // класс, который может лечить дружественных персонажей. сюда входит палатка скорой помощи и будет входить какой-нибудь лысый монах

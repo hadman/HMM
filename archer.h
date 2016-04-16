@@ -6,9 +6,9 @@
 #define HMM_ARCHER_H
 
 
-#include "creature.h"
-
 class archer : public virtual creature {
+private:
+    int arrow_damage; // урон от стрел
 public:
 
     friend class skeleton_archer;

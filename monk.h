@@ -5,8 +5,6 @@
 #ifndef HMM_MONK_H
 #define HMM_MONK_H
 
-#include "warrior.h"
-#include "doctor.h"
 
 class monk : public warrior, public doctor {
     monk(unsigned int id) {

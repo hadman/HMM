@@ -1,13 +1,23 @@
 #include <iostream>
 
-//#include "creature.h"
+
+#include "map.h"
+#include "creature.h"
 #include "player.h"
-//#include "map.h"
+
+#include "undead.h"
+#include "warrior.h"
+#include "doctor.h"
+#include "archer.h"
+
 #include "vampire.h"
 #include "Tent ambulance.h"
+#include "monk.h"
+#include "elf.h"
+#include "skeleton_archer.h"
 
-//#include "map.h"
 #include "the_game.h"
+
 #include "id.h" // генерация уникальных id
 
 using namespace std;
@@ -51,8 +61,8 @@ int main() {
 
     cout << "***********" << endl;
 
-    player1.addCreature(&tent);
     player1.addCreature(&vamp);
+    player1.addCreature(&tent);
 //    player1.addCreature(&vamp2);
 //    player1.addCreature(&vamp3);
 //    player1.addCreature(&vamp4);
@@ -68,8 +78,8 @@ int main() {
     cout << "***********" << endl;
 
 
-    player1.put_creatures_on_map(); // расстановка первого игрока на карте
-    player2.put_creatures_on_map(); // расстановка второго игрока на карте
+    player1.put_creatures_on_map(MAP); // расстановка первого игрока на карте
+    player2.put_creatures_on_map(MAP); // расстановка второго игрока на карте
 
     MAP.print_map();
     int pos[2];
@@ -80,29 +90,5 @@ int main() {
     the_game GAME(player1, player2, MAP);
     GAME.start(player1, player2, MAP);
 
-//    player1.input_position(pos);
-//    cout << "pos.x = " << pos[0] << " pos.y = " << pos[1] << endl;
-
-//    double x, y;
-//
-//    cout << "Input x:";
-//    cin >> x;
-//
-//    cout << "Input y:";
-//    cin >> y;
-
-//    if (x != 0 && y != 0) {
-//
-//        //if (!monster.move(x, y)) {//запрашиваем координаты, пока не будут введены подходящие
-//
-//            cout << "Input x:";
-//            cin >> x;
-//
-//            cout << "Input y:";
-//            cin >> y;
-//        // }
-//
-//
-//    }
 
 }

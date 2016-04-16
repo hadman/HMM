@@ -8,7 +8,6 @@
 #ifndef HMM_MAP_H
 #define HMM_MAP_H
 
-#include "player.h"
 
 using namespace std;
 
@@ -29,9 +28,9 @@ class creature;
 
 class map {
 private:
-    static int width;
-    static int height;
-    static unsigned int **map_of_id;
+    int width;
+    int height;
+    unsigned int **map_of_id;
 public:
 
     friend class player;
@@ -85,8 +84,7 @@ public:
     unsigned int get_creature_ID(int x, int y) // возвращает ID персонажа в клетке.
     {
         return map_of_id[x - 1][y - 1];
-    }
-
+    };
 
     bool is_this_point_empty(int x, int y) // проверяет постая ли клетка. Пустая: true; Не пустая: false
     {
@@ -102,10 +100,17 @@ public:
         return map_of_id[x][y];
     }
 
-    static void wipe_from_map(int x0, int y0) // удаление персонажа с карты
+    void wipe_from_map(int x, int y)
     {
-        map_of_id[x0][y0] = 0;
+        map_of_id[x][y] = 0;
     }
+
+
+
+//    static void del_from_map(creature &creature1) // удаление персонажа с карты
+//    {
+//        map_of_id[creature1.x0][creature1.y0] = 0;
+//    }
 
 
 };

@@ -7,7 +7,6 @@
 
 
 #include "creature.h"
-//#include "map.h"
 #include <vector>
 #include <iostream>
 
@@ -88,36 +87,6 @@ public:
         cin >> y;
         inp_x = x;
         inp_y = y;
-//        bool tmp;
-//        int x = -1;
-//        int y = -1;
-//        cout << "Do  you want to do a motion? 0 - don't want; Else - want; ";
-//        cin >> tmp;
-//        if (tmp == 0) {
-//            mas[0] = x;
-//            mas[1] = y;
-//            return 0;
-//        } else {
-////            while(!(cin >> x) || cin.get() != '\n')
-////            {
-////                cin.clear();
-////                while(cin.get() != '\n');
-////                cout << "Please input X>0" << endl;
-////            }
-////            //cout << "Please input Y>0 ";
-////            while(!(cin >> y))
-////            {
-////                cin.clear();
-////                while(cin.get() != '\n');
-////                cout << "Please input Y>0" << endl;
-////            }
-//            cout << "x = ";
-//            cin >> x;
-//            cout << "y = ";
-//            cin >> y;
-//            mas[0] = x;
-//            mas[1] = y;
-//            return 1;
     };
 
 
@@ -150,7 +119,7 @@ public:
         }
     }
 
-    void put_creatures_on_map() {
+    void put_creatures_on_map(map &MAP) {
         if (playerNum == 1) // расстановка существ первого игрока на карте
         {
             int x = 0; // координата по высоте
@@ -159,12 +128,12 @@ public:
 
             while (i < creatureCount) // расставляем персонажей на карте. начиная слева сверху
             {
-                map::map_of_id[x][y] = creatureMass[i]->get_id();
+                MAP.map_of_id[x][y] = creatureMass[i]->get_id();
                 creatureMass[i]->x0 = x;
                 creatureMass[i]->y0 = y;
 
                 i++;
-                x = (x + 1) % map::height;
+                x = (x + 1) % MAP.height;
                 if (x == 0) {
                     y++;
                 }
@@ -173,16 +142,16 @@ public:
         else // расстановка существ второго игрока на карте
         {
             int x = 0; // координата по высоте
-            int y = map::width - 1; // координата по ширине
+            int y = MAP.width - 1; // координата по ширине
             int i = 0; // счетчик
 
             while (i < creatureCount) // расставляем персонажей на карте. начиная слева сверху
             {
-                map::map_of_id[x][y] = creatureMass[i]->get_id();
+                MAP.map_of_id[x][y] = creatureMass[i]->get_id();
                 creatureMass[i]->x0 = x;
                 creatureMass[i]->y0 = y;
                 i++;
-                x = (x + 1) % map::height;
+                x = (x + 1) % MAP.height;
                 if (x == 0) {
                     y--;
                 }

@@ -5,9 +5,6 @@
 #ifndef HMM_SKELETON_ARCHER_H
 #define HMM_SKELETON_ARCHER_H
 
-#include "undead.h"
-#include "archer.h"
-#include "warrior.h"
 
 class skeleton_archer : public undead, public archer, public warrior {
 public:

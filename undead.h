@@ -5,7 +5,6 @@
 #ifndef HMM_UNDEAD_H
 #define HMM_UNDEAD_H
 
-#include "creature.h"
 
 #include <iostream>
 
@@ -20,19 +19,19 @@ public:
 
     friend class skeleton_archer;
 
-    virtual unsigned int get_damage(creature another) {
-        int hit = arrow_damage > damage ? arrow_damage : damage;//выбираем наибольший урон из возможных
+    virtual int get_damage(creature *another, map &MAP) {
+//        int hit = arrow_damage > damage ? arrow_damage : damage;//выбираем наибольший урон из возможных
 
-        if (defense < hit) {//если защита не полностью поглощает урон, то наносим урон
-            int health_los = hit - defense;//потеря хп = дамаг - защита
+        if (defense < another->damage) {//если защита не полностью поглощает урон, то наносим урон
+            int health_los = another->damage - defense;//потеря хп = дамаг - защита
             health = health - health_los;//уменьшаем здоровье в соответствии с нанесённым уроном
             cout << ID << " lose " << health_los << " hp" << endl;
 
             if (health <= 0) {//если существо умерло
                 alive = false;
-                map::wipe_from_map(x0, y0);
-                if (another.distance_to_point(x0, y0) == 1)
-                    another.health -= death_aura;
+                MAP.wipe_from_map(x0, y0);
+                if (another->distance_to_point(x0, y0) == 1)
+                    another->health -= death_aura;
             }
 
             return health_los; // возвращаем для вампира
