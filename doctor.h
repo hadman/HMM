@@ -16,9 +16,14 @@ public:
 
     friend class Tent_ambulance;
 
-    virtual bool add_hp(creature &another) // Восстановление здоровья персонажа. это сущеество лечит
+    virtual bool add_hp(creature *another) // Восстановление здоровья персонажа. это сущеество лечит
     {
-        cout << ID << " cure " << count_hp << " hp to " << another.ID << endl;
+        cout << ID << " cure " << count_hp << " hp to " << another->ID << endl;
+        another->health += count_hp;
+        if (another->health > another->start_hp) // нельзя добавить существу больше здоровья, чем было при его создании
+        {
+            another->health = another->start_hp;
+        }
         return true;
     }
 };

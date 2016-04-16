@@ -12,6 +12,7 @@ class monk : public warrior, public doctor {
         path_length = 4;
         ID = id;
         health = 5;
+            start_hp = health;
         damage = 12;
         defense = 9;
         count_hp = 4;

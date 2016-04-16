@@ -11,7 +11,7 @@ public:
 
     virtual bool attack(creature *attacked_creature, map &MAP) {  // возможность атаковать. это существо может атаковать
         if (attacked_creature->alive) {
-            attacked_creature->get_damage(this, MAP);
+            attacked_creature->get_damage(this->damage, MAP); // наносит врагу урон обычной атакой.
         }
         return true;
     }

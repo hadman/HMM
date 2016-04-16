@@ -98,7 +98,7 @@ public:
                             tmp_creature->belong_to)          // если это друг
                         {
                             if (game_creature_Mas[i]->add_hp(
-                                    *tmp_creature)) // если этот персонаж умеет восстанавливать здоровье
+                                    tmp_creature)) // если этот персонаж умеет восстанавливать здоровье
                             {
                                 cout << "ATTACK: I add hp to " << tmp_creature->ID << endl;
                             } else {

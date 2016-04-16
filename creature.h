@@ -18,6 +18,8 @@ class creature {
 protected:
     unsigned int ID;
     // уникальный номе персонажа
+    int start_hp;
+    // начальное кол-во здоровья
     int health;
     //количество очков здоровья
     int damage;
@@ -44,6 +46,8 @@ public:
 
     friend class warrior;
 
+    friend class archer;
+
     friend class vampire;
 
     friend class skeleton_archer;
@@ -53,11 +57,11 @@ public:
     friend class the_game;
 
 
-    virtual int get_damage(creature *another, map &MAP) {
+    virtual int get_damage(int enemy_damage, map &MAP) {
         // int hit = arrow_damage > damage ? arrow_damage : damage;//выбираем наибольший урон из возможных
 
-        if (defense < another->damage) {//если защита не полностью поглощает урон, то наносим урон
-            int health_los = another->damage - defense;//потеря хп = дамаг - защита
+        if (defense < enemy_damage) {//если защита не полностью поглощает урон, то наносим урон
+            int health_los = enemy_damage - defense;//потеря хп = дамаг - защита
             health = health - health_los;//уменьшаем здоровье в соответствии с нанесённым уроном
             cout << ID << " lose " << health_los << " hp" << endl;
 
@@ -72,7 +76,7 @@ public:
             return 0;
     }
 
-    virtual bool add_hp(creature &another) // Восстановление здоровья персонажа. по умолчанию существо не лечит
+    virtual bool add_hp(creature *another) // Восстановление здоровья персонажа. по умолчанию существо не лечит
     {
         return false;
     }

@@ -13,6 +13,7 @@ public:
         path_length = 3;
         ID = id;
         health = 5;
+            start_hp = health;
         damage = 10;
         defense = 5;
     };

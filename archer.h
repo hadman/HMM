@@ -15,6 +15,13 @@ public:
 
     friend class elf;
 
+    virtual bool arrow_attack(creature *attacked_creature,
+                              map &MAP) {  // возможность стрелять из лука. это существо может стрелять
+        if (attacked_creature->alive) {
+            attacked_creature->get_damage(this->damage, MAP); // наносит врагу урон стрелой.
+        }
+        return true;
+    }
 
 };
 

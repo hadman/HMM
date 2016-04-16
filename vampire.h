@@ -10,7 +10,7 @@ class vampire : public undead, public warrior {
 public:
     virtual bool attack(creature *another, map &MAP) {
         if (another->alive) {
-            int regeneration = another->get_damage(this, MAP) / 2;
+            int regeneration = another->get_damage(another->damage, MAP) / 2;
             health += regeneration;
             cout << ID << " got " << regeneration << " hp" << endl;
         }
@@ -22,6 +22,7 @@ public:
         path_length = 10;
         ID = id;
         health = 5;
+        start_hp = health;
         damage = 12;
         defense = 9;
         //cout << "vampire created!" << endl;
