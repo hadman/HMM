@@ -103,7 +103,8 @@ public:
                                 goto repeat_input;
                             }
                         } else {
-                            if (game_creature_Mas[i]->attack_arrow(*tmp_creature)) // если этот персонаж умеет стрелять
+                            if (MAP.attack_arrow(game_creature_Mas[i],
+                                                 tmp_creature)) // если этот персонаж умеет стрелять
                             {
                                 cout << "ATTACK: I short a " << tmp_creature->ID << endl;
                             } else // попытаемся подойти к нему
@@ -118,17 +119,29 @@ public:
                                     if ((abs(game_creature_Mas[i]->x0 - inp_x) <= 1) &&
                                         // проверяем находится ли утакуевое существо уже в радиусе одной клетки
                                         (abs(game_creature_Mas[i]->y0 - inp_y) <= 1)) {
-                                        cout << "attackHere = " << tmp_creature->get_id() <<
-                                        endl; // атакуем текущим персонажем персонажа в клетке
-                                        MAP.attack(game_creature_Mas[i], tmp_creature);
+                                        if (MAP.attack(game_creature_Mas[i],
+                                                       tmp_creature)) // умеет ли это существо атаковать
+                                        {
+                                            cout << "attackHere = " << tmp_creature->get_id() <<
+                                            endl; // атакуем текущим персонажем персонажа в клетке
+                                        } else {
+                                            cout << "ERROR: this creature can't attack" << endl;
+                                            goto repeat_input;
+                                        }
                                     } else {
                                         if (MAP.search_empty_point(game_creature_Mas[i], tmp_creature, tmp_x,
                                                                    tmp_y)) // проверяет можно ли подойти к существу вплотную
                                         {
-                                            cout << "attackThere = " << tmp_creature->get_id() <<
-                                            endl; // атакуем текущим персонажем персонажа в клетке
-                                            MAP.move(game_creature_Mas[i], tmp_x, tmp_y);
-                                            MAP.attack(game_creature_Mas[i], tmp_creature);
+                                            if (MAP.attack(game_creature_Mas[i],
+                                                           tmp_creature)) // умеет ли это существо атаковать
+                                            {
+                                                cout << "attackThere = " << tmp_creature->get_id() <<
+                                                endl; // атакуем текущим персонажем персонажа в клетке
+                                                MAP.move(game_creature_Mas[i], tmp_x, tmp_y);
+                                            } else {
+                                                cout << "ERROR: this creature can't attack" << endl;
+                                                goto repeat_input;
+                                            }
                                         } else {
                                             cout << "ERROR: you can't attack this creature" << endl;
                                             goto repeat_input;

@@ -11,7 +11,7 @@
 
 using namespace std;
 
-class undead : public creature {
+class undead : public virtual creature { // виртуальное наследование для решения проблемы ромбовидного наследования
 protected:
     unsigned int death_aura;//после убийства нежити, противнику наносится урон, равный death aura
 public:

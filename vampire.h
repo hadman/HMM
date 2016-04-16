@@ -6,15 +6,17 @@
 #define HMM_VAMPIRE_H
 
 #include "undead.h"
+#include "warrior.h"
 
-class vampire : public undead {
+class vampire : public undead, public warrior {
 public:
-    virtual void attack(creature &another) {
+    virtual bool attack(creature &another) {
         if (another.alive) {
-            int regeneration = another.get_damage(*this);
+            int regeneration = another.get_damage(*this) / 2;
             health += regeneration;
             cout << ID << " got " << regeneration << " hp" << endl;
         }
+        return true;
     }
 
     vampire(unsigned int id) {

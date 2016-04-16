@@ -7,8 +7,9 @@
 
 #include "undead.h"
 #include "archer.h"
+#include "warrior.h"
 
-class skeleton_archer : public undead, public archer {
+class skeleton_archer : public undead, public archer, public warrior {
 public:
     skeleton_archer(unsigned int id) {
         alive = true;
@@ -18,8 +19,6 @@ public:
         damage = 10;
         defense = 5;
     };
-
-
 
 //    friend bool archer::move();
 

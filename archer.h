@@ -8,7 +8,7 @@
 
 #include "creature.h"
 
-class archer : creature {
+class archer : public virtual creature {
 public:
 
     virtual bool attack_arrow(creature &another) // стрельба из лука.
@@ -19,29 +19,29 @@ public:
         return true;
     }
 
-    bool move(unsigned int x, unsigned int y) {
-//        bool answer;
-//
-//        if (!map::is_empty(x, y)) {//если клетка занята другим существом, то стреляем в него
-//            attack(map::get_creature(x, y));
-//            answer = true;
-//        }
-//        else {
-//            unsigned int metrics =
-//                    abs(x0 - x) + abs(y0 - y);//вычисляем расстояние до точки с текущего положения существа
-//
-//            if (metrics <= path_length) {//если существу хватает длины хода, то премещаем его
-//                answer = true;
-//                x0 = x;
-//                y0 = y;
-//            } else {//если недостаточно длины хода
-//                cout << "Too far. Creature`s path length = " << path_length << endl;
-//                answer = false;
-//            }
-//            return answer;
-//
-//        }
-    }
+//    bool move(unsigned int x, unsigned int y) {
+////        bool answer;
+////
+////        if (!map::is_empty(x, y)) {//если клетка занята другим существом, то стреляем в него
+////            attack(map::get_creature(x, y));
+////            answer = true;
+////        }
+////        else {
+////            unsigned int metrics =
+////                    abs(x0 - x) + abs(y0 - y);//вычисляем расстояние до точки с текущего положения существа
+////
+////            if (metrics <= path_length) {//если существу хватает длины хода, то премещаем его
+////                answer = true;
+////                x0 = x;
+////                y0 = y;
+////            } else {//если недостаточно длины хода
+////                cout << "Too far. Creature`s path length = " << path_length << endl;
+////                answer = false;
+////            }
+////            return answer;
+////
+////        }
+//    }
 };
 
 

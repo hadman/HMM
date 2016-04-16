@@ -144,14 +144,30 @@ public:
         creature1->move(new_x, new_y);
     }
 
-    void attack(creature *attack_creature, creature *attacked_creature) {
-        attack_creature->attack(*attacked_creature);
-        if (attacked_creature->alive == false)  // если атакуемый умирает
+    bool attack(creature *attack_creature, creature *attacked_creature) {
+        bool tmp = attack_creature->attack(*attacked_creature);
+        if (tmp)
         {
-            cout << "suka ya ubil ego!!!" << endl;
-            move(attack_creature, attacked_creature->x0, attacked_creature->y0); // встаем на его место
+            if (attacked_creature->alive == false)  // если атакуемый умирает
+            {
+                cout << "suka ya ubil ego!!!" << endl;
+                move(attack_creature, attacked_creature->x0, attacked_creature->y0); // встаем на его место
+            }
         }
+        return tmp;
     }
+
+    bool attack_arrow(creature *attack_creature, creature *attacked_creature) {
+        bool tmp = attack_creature->attack_arrow(*attacked_creature);
+        if (tmp) {
+            if (attacked_creature->alive == false)  // если атакуемый умирает
+            {
+                cout << "suka ya ubil ego iz luka!!!" << endl;
+            }
+        }
+        return tmp;
+    }
+
 
     void del_from_map(creature *creature1) // удаление персонажа с карты
     {

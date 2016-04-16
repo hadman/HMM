@@ -4,6 +4,7 @@
 #include "player.h"
 //#include "map.h"
 #include "vampire.h"
+#include "Tent ambulance.h"
 
 #include "map.h"
 #include "the_game.h"
@@ -19,6 +20,7 @@ int main() {
     player player1(1);
     player player2(2);
 
+    Tent_ambulance tent(ID.get_id());
     vampire vamp(ID.get_id());
     vampire vamp2(ID.get_id());
     vampire vamp3(ID.get_id());
@@ -49,7 +51,7 @@ int main() {
 
     cout << "***********" << endl;
 
-
+    player1.addCreature(&tent);
     player1.addCreature(&vamp);
 //    player1.addCreature(&vamp2);
 //    player1.addCreature(&vamp3);

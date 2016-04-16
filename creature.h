@@ -39,6 +39,10 @@ public:
 
     friend class undead;
 
+    friend class doctor;
+
+    friend class warrior;
+
     friend class vampire;
 
     friend class skeleton_archer;
@@ -66,10 +70,8 @@ public:
             return 0;
     }
 
-    virtual void attack(creature &another) {
-        if (another.alive) {
-            another.get_damage(*this);
-        }
+    virtual bool attack(creature &another) {  // возможность атаковать. по умолчанию существо не атакует
+        return false;
     }
 
     virtual bool attack_arrow(creature &another) // стрельба из лука. по умолчанию существо не струляет из лука
