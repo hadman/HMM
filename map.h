@@ -8,7 +8,6 @@
 #ifndef HMM_MAP_H
 #define HMM_MAP_H
 
-#include "creature.h"
 #include "player.h"
 
 using namespace std;
@@ -38,6 +37,8 @@ public:
     friend class player;
 
     friend class creature;
+
+    friend class the_game;
 
     map(int x, int y) // создание карты и заполнение всех полей нулями y- ширина. x - высота
     {
@@ -84,16 +85,8 @@ public:
     unsigned int get_creature_ID(int x, int y) // возвращает ID персонажа в клетке.
     {
         return map_of_id[x - 1][y - 1];
-    };
-
-    bool can_creature_move_to_point(int x, int y,
-                                    creature &creature1) // проверяет находится ли заданная координата в зоне досягаемости хода персонажа
-    {
-        if ((abs(creature1.x0 - x) >= creature1.path_length) || (abs(creature1.y0 - y) >= creature1.path_length)) {
-            return false;
-        }
-        return true;
     }
+
 
     bool is_this_point_empty(int x, int y) // проверяет постая ли клетка. Пустая: true; Не пустая: false
     {
@@ -109,43 +102,12 @@ public:
         return map_of_id[x][y];
     }
 
-    double distance_to_point(creature &cr, int x, int y) // возвращает расстояние от точки (x,y) до персонажа
+    static void wipe_from_map(int x0, int y0) // удаление персонажа с карты
     {
-        return sqrt(abs(x - cr.x0) + abs(y - cr.y0));
+        map_of_id[x0][y0] = 0;
     }
 
-    static void del_from_map(creature &creature1) // удаление персонажа с карты
-    {
-        map_of_id[creature1.x0][creature1.y0] = 0;
-    }
 
-    bool search_empty_point(creature *creature1, creature *creature2, int &x,
-                            int &y) // поиск ближайшей точки, куда может встать creature1, чтобы ударить creature2. False: creature2 нельзя ударить
-    {
-        double distance = sqrt(width * width + height * height) + 10; // расстояние по умолчанию
-        bool found = false;                                   // проверка найдена ли хотя бы одна свободаная клетка
-        for (int i = 0; i < height; ++i) {
-            for (int j = 0; j < width; ++j) {
-                if ((map_of_id[i][j] == 0) &&                                        // смотрит чтобы клетка была пустой
-                    (abs(creature1->x0 - i) < creature1->path_length) &&
-                    // смотрит чтобы клетка была в зоне удара creature1
-                    (abs(creature1->y0 - j) < creature1->path_length) &&
-                    (abs(creature2->x0 - i) <= 1) &&
-                    // смотрит чтобы клетка была соседней с creature2
-                    (abs(creature2->y0 - j) <= 1) &&
-                    (creature1->distance_to_point(i, j) <
-                     distance))               // смотрит чтобы расстояние до клетки было меньше чем в предыдущем случае
-                {
-                    x = i;                                          // сохраняем координаты
-                    y = j;
-                    cout << "new x = " << x << " new y = " << y << endl;
-                    distance = creature1->distance_to_point(i, j);    // сохраняем расстояние
-                    found = true;
-                }
-            }
-        }
-        return found;
-    }
 };
 
 

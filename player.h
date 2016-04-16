@@ -7,7 +7,7 @@
 
 
 #include "creature.h"
-#include "map.h"
+//#include "map.h"
 #include <vector>
 #include <iostream>
 

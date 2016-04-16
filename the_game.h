@@ -109,8 +109,8 @@ public:
                                 cout << "ATTACK: I shot a " << tmp_creature->ID << endl;
                             } else // попытаемся подойти к нему
                             {
-                                if (!MAP.can_creature_move_to_point(inp_x, inp_y,
-                                                                    *game_creature_Mas[i])) // проверяем в зоне досягаемости ли введенные координаты
+                                if (!(game_creature_Mas[i]->can_creature_move_to_point(inp_x,
+                                                                                       inp_y)))// проверяем в зоне досягаемости ли введенные координаты
                                 {
                                     cout << "ERROR: this creature can't move so far" << endl;
                                     goto repeat_input;
@@ -128,8 +128,8 @@ public:
                                             goto repeat_input;
                                         }
                                     } else {
-                                        if (MAP.search_empty_point(game_creature_Mas[i], tmp_creature, tmp_x,
-                                                                   tmp_y)) // проверяет можно ли подойти к существу вплотную
+                                        if (search_empty_point(game_creature_Mas[i], tmp_creature, tmp_x,
+                                                               tmp_y)) // проверяет можно ли подойти к существу вплотную
                                         {
                                             if (game_creature_Mas[i] > 0) // умеет ли это существо атаковать
                                             {
@@ -151,13 +151,14 @@ public:
 
                     } else // тогда в нее нужно походить
                     {
-                        if (!MAP.can_creature_move_to_point(inp_x, inp_y,
-                                                            *game_creature_Mas[i])) // проверяем в зоне досягаемости ли введенные координаты
+                        if (
+                                !(game_creature_Mas[i]->can_creature_move_to_point(inp_x,
+                                                                                   inp_y)))// проверяем в зоне досягаемости ли введенные координаты
                         {
                             cout << "ERROR: this creature can't move so far" << endl;
                             goto repeat_input;
                         } else {
-                            MAP.move(game_creature_Mas[i], inp_x, inp_y);
+                            game_creature_Mas[i]->move(inp_x, inp_y);
                         }
 //                        is_point_empty = true; // клетка пустая
                     }
@@ -205,6 +206,35 @@ public:
             }
         }
         cout << "RRRAAAUND!!!" << endl;
+    }
+
+    bool search_empty_point(creature *creature1, creature *creature2, int &x,
+                            int &y) // поиск ближайшей точки, куда может встать creature1, чтобы ударить creature2. False: creature2 нельзя ударить
+    {
+        double distance = sqrt(map::width * map::width + map::height * map::height) + 10; // расстояние по умолчанию
+        bool found = false;                                   // проверка найдена ли хотя бы одна свободаная клетка
+        for (int i = 0; i < map::height; ++i) {
+            for (int j = 0; j < map::width; ++j) {
+                if ((map::map_of_id[i][j] == 0) &&
+                    // смотрит чтобы клетка была пустой
+                    (abs(creature1->x0 - i) < creature1->path_length) &&
+                    // смотрит чтобы клетка была в зоне удара creature1
+                    (abs(creature1->y0 - j) < creature1->path_length) &&
+                    (abs(creature2->x0 - i) <= 1) &&
+                    // смотрит чтобы клетка была соседней с creature2
+                    (abs(creature2->y0 - j) <= 1) &&
+                    (creature1->distance_to_point(i, j) <
+                     distance))               // смотрит чтобы расстояние до клетки было меньше чем в предыдущем случае
+                {
+                    x = i;                                          // сохраняем координаты
+                    y = j;
+                    cout << "new x = " << x << " new y = " << y << endl;
+                    distance = creature1->distance_to_point(i, j);    // сохраняем расстояние
+                    found = true;
+                }
+            }
+        }
+        return found;
     }
 
 

@@ -21,11 +21,11 @@ protected:
     // уникальный номе персонажа
     int health;
     //количество очков здоровья
-    unsigned int damage;
+    int damage;
     //урон, наносимый существом
-    unsigned int defense;
+    int defense;
     //защита - то, сколько урона существо может предотвратить
-    unsigned int path_length;
+    int path_length;
     //длина хода
     int x0;
     //абцисса координаты, на которой находится существо
@@ -55,14 +55,18 @@ public:
     friend class the_game;
 
     virtual int get_damage(creature &another) {
-        if (defense < another.damage) {//если защита не полностью поглощает урон, то наносим урон
-            int health_los = another.damage - defense;//потеря хп = дамаг - защита
+        int hit = arrow_damage > damage ? arrow_damage : damage;//выбираем наибольший урон из возможных
+
+        if (defense < hit) {//если защита не полностью поглощает урон, то наносим урон
+            int health_los = hit - defense;//потеря хп = дамаг - защита
             health = health - health_los;//уменьшаем здоровье в соответствии с нанесённым уроном
             cout << ID << " lose " << health_los << " hp" << endl;
+
             if (health <= 0) {//если существо умерло
                 alive = false;
-                map::del_from_map(*this);
+                map::wipe_from_map(x0, y0);
             }
+
             return health_los; // возвращаем для вампира
         }
         else
@@ -84,9 +88,23 @@ public:
         y0 = new_y;
     }
 
-    bool attack(creature *attacked_creature) {
+    void attack(creature *attacked_creature) {
         attacked_creature->get_damage(*this);
 
+    }
+
+    bool can_creature_move_to_point(int x,
+                                    int y) // проверяет находится ли заданная координата в зоне досягаемости хода персонажа
+    {
+        if ((abs(x0 - x) >= path_length) || (abs(y0 - y) >= path_length)) {
+            return false;
+        }
+        return true;
+    }
+
+    double distance_to_point(int x, int y) // возвращает расстояние от точки (x,y) до существа
+    {
+        return sqrt(abs(x - x0) + abs(y - y0));
     }
 };
 

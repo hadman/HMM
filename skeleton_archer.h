@@ -20,8 +20,6 @@ public:
         defense = 5;
     };
 
-//    friend bool archer::move();
-
 };
 
 

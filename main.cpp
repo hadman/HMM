@@ -6,7 +6,7 @@
 #include "vampire.h"
 #include "Tent ambulance.h"
 
-#include "map.h"
+//#include "map.h"
 #include "the_game.h"
 #include "id.h" // генерация уникальных id
 

@@ -21,16 +21,21 @@ public:
     friend class skeleton_archer;
 
     virtual unsigned int get_damage(creature another) {
-        if (defense < another.damage) {//если защита не полностью поглощает урон, то наносим урон
-            unsigned int health_los = damage - defense;//потеря хп = дамаг - защита
-            health -= health_los;//уменьшаем здоровье в соответствии с нанесённым уроном
+        int hit = arrow_damage > damage ? arrow_damage : damage;//выбираем наибольший урон из возможных
 
-            if (health <= 0) {//если существо убили, то атакуем пртоивника аурой смерти
-                another.health -= death_aura;
-                alive = 0;
+        if (defense < hit) {//если защита не полностью поглощает урон, то наносим урон
+            int health_los = hit - defense;//потеря хп = дамаг - защита
+            health = health - health_los;//уменьшаем здоровье в соответствии с нанесённым уроном
+            cout << ID << " lose " << health_los << " hp" << endl;
+
+            if (health <= 0) {//если существо умерло
+                alive = false;
+                map::wipe_from_map(x0, y0);
+                if (another.distance_to_point(x0, y0) == 1)
+                    another.health -= death_aura;
             }
 
-            return health_los;
+            return health_los; // возвращаем для вампира
         }
         else
             return 0;
