@@ -13,7 +13,7 @@ using namespace std;
 
 enum TileResource {
     //цвет поля в данной клетке
-    TR_GRASS,
+            TR_GRASS,
     TR_STONE,
     TR_DESERT
 };
@@ -24,30 +24,22 @@ enum CreatureResource {
     CR_GNOME
 };
 
-class creature;
+static int width = 0;
+static int height = 0;
+static int **map_of_id = NULL;//карта id существ
 
 class map {
-private:
-    int width;
-    int height;
-    unsigned int **map_of_id;
 public:
 
-    friend class player;
-
-    friend class creature;
-
-    friend class the_game;
-
-    map(int x, int y) // создание карты и заполнение всех полей нулями y- ширина. x - высота
+    static void make_map(int x, int y) // создание карты и заполнение всех полей нулями y- ширина. x - высота
     {
         height = x; // высота карты
         width = y; // ширина карты
 
-        map_of_id = new unsigned int *[height];
+        map_of_id = new int *[height];
 
         for (int i = 0; i < height; ++i) {
-            map_of_id[i] = new unsigned int[width];
+            map_of_id[i] = new int[width];
         }
 
         for (int j = 0; j < height; ++j) {
@@ -57,7 +49,7 @@ public:
         }
     }
 
-    ~map() // Деструктор
+    static void destroy_map() // Деструктор
     {
         for (int k = 0; k < height; ++k) {
             delete map_of_id[k];
@@ -65,7 +57,7 @@ public:
         delete[] map_of_id;
     }
 
-    void print_map() {
+    static void print_map() {
         cout << "x/y ";
         for (int k = 0; k < width; ++k) {
             cout << k << " ";
@@ -81,12 +73,12 @@ public:
         }
     }
 
-    unsigned int get_creature_ID(int x, int y) // возвращает ID персонажа в клетке.
+    static unsigned int get_creature_ID(int x, int y) // возвращает ID персонажа в клетке.
     {
         return map_of_id[x - 1][y - 1];
     };
 
-    bool is_this_point_empty(int x, int y) // проверяет постая ли клетка. Пустая: true; Не пустая: false
+    static bool is_this_point_empty(int x, int y) // проверяет постая ли клетка. Пустая: true; Не пустая: false
     {
         if (map_of_id[x][y] == 0) {
             return true;
@@ -96,12 +88,11 @@ public:
     }
 
 
-    unsigned int get_id_of_point(int x, int y) {
+    static unsigned int get_id_of_point(int x, int y) {
         return map_of_id[x][y];
     }
 
-    void wipe_from_map(int x, int y)
-    {
+    static void wipe_from_map(int x, int y) {
         map_of_id[x][y] = 0;
     }
 

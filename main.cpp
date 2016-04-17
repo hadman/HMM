@@ -1,5 +1,5 @@
 #include <iostream>
-
+//todo спроси про static class, методы, аттрибуты; extern
 
 #include "map.h"
 #include "creature.h"
@@ -8,25 +8,22 @@
 #include "undead.h"
 #include "warrior.h"
 #include "doctor.h"
-#include "archer.h"
 
 #include "vampire.h"
-#include "Tent ambulance.h"
-#include "monk.h"
-#include "elf.h"
-#include "skeleton_archer.h"
+#include "Tent_ambulance.h"
 
 #include "the_game.h"
 
-#include "id.h" // генерация уникальных id
+#include "id.h"
+// генерация уникальных id
 
 using namespace std;
 
+
 int main() {
     creature_ID ID; // уникальный номер
-    map MAP(5, 10);  // карта
+    map::make_map(5, 10); // карта
 
-    creature monster;
     player player1(1);
     player player2(2);
 
@@ -78,17 +75,19 @@ int main() {
     cout << "***********" << endl;
 
 
-    player1.put_creatures_on_map(MAP); // расстановка первого игрока на карте
-    player2.put_creatures_on_map(MAP); // расстановка второго игрока на карте
+    player1.put_creatures_on_map(); // расстановка первого игрока на карте
+    player2.put_creatures_on_map(); // расстановка второго игрока на карте
 
-    MAP.print_map();
+    map::print_map();
     int pos[2];
 
-    cout << "what is in point? " << MAP.get_creature_ID(1, 1) << endl;
+    cout << "what is in point? " << map::get_creature_ID(1, 1) << endl;
 
 
-    the_game GAME(player1, player2, MAP);
-    GAME.start(player1, player2, MAP);
+    the_game GAME(player1, player2);
+    GAME.start(player1, player2);
+
+    map::destroy_map();
 
 
 }

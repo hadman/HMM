@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include <cmath>
-//#include "map.h"
+#include "map.h"
 
 
 using namespace std;
@@ -66,7 +66,7 @@ public:
 
             if (health <= 0) {//если существо умерло
                 alive = false;
-                MAP.wipe_from_map(x0, y0);
+                map::wipe_from_map(x0, y0);
             }
 
             return health_los; // возвращаем для вампира
@@ -84,20 +84,20 @@ public:
         return ID;
     }
 
-    void move(int new_x, int new_y, map &MAP) // перемещает персонажа в указанную клетку
+    void move(int new_x, int new_y) // перемещает персонажа в указанную клетку
     {
-        MAP.map_of_id[x0][y0] = 0; // удалили из прошлой клетки
-        MAP.map_of_id[new_x][new_y] = ID;     // преместили в новую клетку
+        map_of_id[x0][y0] = 0; // удалили из прошлой клетки
+        map_of_id[new_x][new_y] = ID;     // преместили в новую клетку
         x0 = new_x;
         y0 = new_y;
     }
 
-    virtual bool arrow_attack(creature *attacked_creature, map &MAP) // по умолчанию существо не стреляет
+    virtual bool arrow_attack(creature *attacked_creature) // по умолчанию существо не стреляет
     {
         return false;
     }
 
-    virtual bool attack(creature *attacked_creature, map &MAP) { // по умолчанию существо не атакует
+    virtual bool attack(creature *attacked_creature) { // по умолчанию существо не атакует
         return false;
     }
 

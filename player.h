@@ -119,7 +119,7 @@ public:
         }
     }
 
-    void put_creatures_on_map(map &MAP) {
+    void put_creatures_on_map() {
         if (playerNum == 1) // расстановка существ первого игрока на карте
         {
             int x = 0; // координата по высоте
@@ -128,12 +128,12 @@ public:
 
             while (i < creatureCount) // расставляем персонажей на карте. начиная слева сверху
             {
-                MAP.map_of_id[x][y] = creatureMass[i]->get_id();
+                map_of_id[x][y] = creatureMass[i]->get_id();
                 creatureMass[i]->x0 = x;
                 creatureMass[i]->y0 = y;
 
                 i++;
-                x = (x + 1) % MAP.height;
+                x = (x + 1) % height;
                 if (x == 0) {
                     y++;
                 }
@@ -142,16 +142,16 @@ public:
         else // расстановка существ второго игрока на карте
         {
             int x = 0; // координата по высоте
-            int y = MAP.width - 1; // координата по ширине
+            int y = width - 1; // координата по ширине
             int i = 0; // счетчик
 
             while (i < creatureCount) // расставляем персонажей на карте. начиная слева сверху
             {
-                MAP.map_of_id[x][y] = creatureMass[i]->get_id();
+                map_of_id[x][y] = creatureMass[i]->get_id();
                 creatureMass[i]->x0 = x;
                 creatureMass[i]->y0 = y;
                 i++;
-                x = (x + 1) % MAP.height;
+                x = (x + 1) % height;
                 if (x == 0) {
                     y--;
                 }
