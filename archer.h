@@ -17,6 +17,13 @@ public:
 
     virtual bool arrow_attack(
             creature *attacked_creature) {  // возможность стрелять из лука. это существо может стрелять
+
+        if (((abs(attacked_creature->x0 - x0) <= 1)) &&
+            (abs(attacked_creature->y0 - y0) <= 1)) // если существо рядом, то в него нельзя выстрелить
+        {
+            return false;
+        }
+
         if (attacked_creature->alive) {
             //cout << "I arrow_attack " << attacked_creature->ID << endl;
             attacked_creature->get_damage(arrow_damage); // наносит врагу урон стрелой.

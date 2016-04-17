@@ -72,9 +72,9 @@ int main() {
     cout << "***********" << endl;
 
     player1.addCreature(&vamp);
-    player1.addCreature(&skelet1);
-    player1.addCreature(&tent);
-    player1.addCreature(&monk1);
+//    player1.addCreature(&skelet1);
+//    player1.addCreature(&tent);
+//    player1.addCreature(&monk1);
 //    player1.addCreature(&vamp2);
 //    player1.addCreature(&vamp3);
 //    player1.addCreature(&vamp4);
@@ -82,10 +82,10 @@ int main() {
 //    player1.addCreature(&vamp6);
 //    player1.addCreature(&vamp7);
 
-    player2.addCreature(&vamp8);
+//    player2.addCreature(&vamp8);
     player2.addCreature(&skelet2);
-    player2.addCreature(&monk2);
-    player2.addCreature(&elf1);
+//    player2.addCreature(&monk2);
+//    player2.addCreature(&elf1);
 
     cout << "***********" << endl;
 
