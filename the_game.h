@@ -68,6 +68,8 @@ public:
         int tmp_x; // позиция, с которой можно ударить персонажа
         int tmp_y;
 
+        int check; // проверка
+
 //        bool is_point_empty; // true: клетка пустая. false: не пустая
 
         creature *tmp_creature; // буфер временнго персонажа
@@ -77,21 +79,33 @@ public:
         {
             if (game_creature_Mas[i]->alive) // ход дается только живым персонажам
             {
-                cout << "ID of creature: " << game_creature_Mas[i]->ID << endl;
+                cout << endl;
+                cout << "RACE:" << game_creature_Mas[i]->race << ";  ID:" << game_creature_Mas[i]->ID << endl;
                 cout << "path length of creature:" << game_creature_Mas[i]->path_length << endl;
                 do {
                     repeat_input:;
+                    check = true;
                     if (game_creature_Mas[i]->belong_to == 1) // ходит первый игрок
                     {
                         cout << "the course of player I:" << endl;
-                        gamer1.input_position(inp_x, inp_y);
+                        check = (gamer1.input_position(inp_x, inp_y)); // если координаты выходят за границу
                     } else {
                         cout << "the course of player II:" << endl;
-                        gamer2.input_position(inp_x, inp_y);
+                        check = gamer2.input_position(inp_x, inp_y); // если координаты выходят за границу
                     }
 
-                    if ((inp_x < width) && (inp_y < height) &&
-                        !(map::is_this_point_empty(inp_x, inp_y))) // если клетка непустая
+                    if (check == 0) // если координаты введены неправильно
+                    {
+                        cout << "ERROR: this position is't on the map" << endl;
+                        goto repeat_input;
+                    }
+                    if (check == -1) // если игрок хочет пропустить ход
+                    {
+                        cout << "You missed your turn" << endl;
+                        break;
+                    }
+
+                    if (!(map::is_this_point_empty(inp_x, inp_y))) // если клетка непустая
                     {
 //                        is_point_empty = false; // клетка непустая
                         tmp_creature = return_creature_by_id(
@@ -121,8 +135,8 @@ public:
                                 } else // если персонаж в зоне досягаемости
                                 {
                                     if ((abs(game_creature_Mas[i]->x0 - inp_x) <= 1) &&
-                                        (abs(game_creature_Mas[i]->y0 - inp_y) <=
-                                         1)) // проверяем находится ли утакуевое существо уже в радиусе одной клетки
+                                        (abs(game_creature_Mas[i]->y0 - inp_y)) <=
+                                        1) // проверяем находится ли утакуевое существо уже в радиусе одной клетки
                                     {
                                         if (game_creature_Mas[i]->attack(
                                                 tmp_creature)) // умеет ли это существо атаковать
@@ -173,6 +187,8 @@ public:
 
                 map::print_map();
 
+                i = (i + 1) % game_creature_Mas_Count;
+            } else {
                 i = (i + 1) % game_creature_Mas_Count;
             }
         }

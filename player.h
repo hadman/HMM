@@ -78,15 +78,29 @@ public:
         return false;
     }
 
-    bool input_position(int &inp_x, int &inp_y) {
+    int input_position(int &inp_x, int &inp_y) {
         int x;
         int y;
+
+        cout << "if you want to skip: input '-1'" << endl;
+
         cout << "X = ";
         cin >> x;
         cout << "Y = ";
         cin >> y;
         inp_x = x;
         inp_y = y;
+
+        if ((inp_x == -1) || (inp_y == -1)) {
+            return -1;
+        }
+
+        if ((inp_x >= height) || (inp_y >= width) || (inp_x < 0) ||
+            (inp_y < 0)) // если введенные координаты выходят за границу поля
+        {
+            return 0;
+        }
+        return 1;
     };
 
 

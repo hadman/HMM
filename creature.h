@@ -36,6 +36,7 @@ protected:
     //принадлежность к 1 или 2 игроку
     int count_hp; // сколько здоровья вылечивает
     int damage;
+    string race; // хранит название расы существа
 public:
     friend class player;
 
@@ -56,7 +57,7 @@ public:
     friend class the_game;
 
 
-    virtual int get_damage(int enemy_damage, map &MAP) {
+    virtual int get_damage(int enemy_damage) {
         // int hit = arrow_damage > damage ? arrow_damage : damage;//выбираем наибольший урон из возможных
 
         if (defense < enemy_damage) {//если защита не полностью поглощает урон, то наносим урон
@@ -66,6 +67,7 @@ public:
 
             if (health <= 0) {//если существо умерло
                 alive = false;
+                cout << ID << "is dead " << endl;
                 map::wipe_from_map(x0, y0);
             }
 

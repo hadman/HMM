@@ -18,7 +18,8 @@ public:
             health = 7;
             start_hp = health;
         defense = 0; // нет защиты
-        count_hp = 5; // сколько здоровья вылечивает
+        count_hp = 3; // сколько здоровья вылечивает
+        race = "Tent_ambulance";
     }
 };
 

@@ -12,11 +12,12 @@ public:
         alive = true;
         path_length = 3;
         ID = id;
-        health = 5;
+        health = 10;
             start_hp = health;
         damage = 10;
-        arrow_damage = 14;
-        defense = 5;
+        arrow_damage = 13;
+        defense = 9;
+        race = "skeleton_archer";
     };
 
 };

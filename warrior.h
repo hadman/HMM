@@ -18,9 +18,9 @@ public:
 
     friend class skeleton_archer;
 
-    virtual bool attack(creature *attacked_creature, map &MAP) {  // возможность атаковать. это существо может атаковать
+    virtual bool attack(creature *attacked_creature) {  // возможность атаковать. это существо может атаковать
         if (attacked_creature->alive) {
-            attacked_creature->get_damage(this->damage, MAP); // наносит врагу урон обычной атакой.
+            attacked_creature->get_damage(this->damage); // наносит врагу урон обычной атакой.
         }
         return true;
     }

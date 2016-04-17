@@ -8,9 +8,13 @@
 #include "undead.h"
 #include "warrior.h"
 #include "doctor.h"
+#include "archer.h"
 
 #include "vampire.h"
 #include "Tent_ambulance.h"
+#include "elf.h"
+#include "skeleton_archer.h"
+#include "monk.h"
 
 #include "the_game.h"
 
@@ -41,6 +45,15 @@ int main() {
     vampire vamp10(ID.get_id());
     vampire vamp11(ID.get_id());
 
+    skeleton_archer skelet1(ID.get_id());
+    skeleton_archer skelet2(ID.get_id());
+
+    monk monk1(ID.get_id());
+    monk monk2(ID.get_id());
+
+    elf elf1(ID.get_id());
+    elf elf2(ID.get_id());
+
 //    cout << "***********" << endl;
 //
 //    cout << "id = " << vamp.get_id() << endl;
@@ -58,8 +71,10 @@ int main() {
 
     cout << "***********" << endl;
 
+    player1.addCreature(&vamp);
+    player1.addCreature(&skelet1);
     player1.addCreature(&tent);
-    player1.addCreature(&vamp2);
+    player1.addCreature(&monk1);
 //    player1.addCreature(&vamp2);
 //    player1.addCreature(&vamp3);
 //    player1.addCreature(&vamp4);
@@ -68,9 +83,9 @@ int main() {
 //    player1.addCreature(&vamp7);
 
     player2.addCreature(&vamp8);
-    player2.addCreature(&vamp9);
-    player2.addCreature(&vamp10);
-    player2.addCreature(&vamp11);
+    player2.addCreature(&skelet2);
+    player2.addCreature(&monk2);
+    player2.addCreature(&elf1);
 
     cout << "***********" << endl;
 
