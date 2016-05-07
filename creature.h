@@ -37,6 +37,7 @@ protected:
     int count_hp; // сколько здоровья вылечивает
     int damage;
     string race; // хранит название расы существа
+    SDL_Texture *skin = nullptr; // текстура персонажа
 public:
     friend class player;
 

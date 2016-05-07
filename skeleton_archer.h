@@ -9,6 +9,9 @@
 class skeleton_archer : public undead, public archer, public warrior {
 public:
     skeleton_archer(unsigned int id) {
+        skin = LoadImage("skeletonL.bmp");
+        if (skin == NULL)
+            cout << "skeleton not found " << endl;
         alive = true;
         path_length = 3;
         ID = id;

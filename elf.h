@@ -12,6 +12,9 @@
 class elf : public warrior, public archer {
 public:
     elf(unsigned int id) {
+        skin = LoadImage("elfL.bmp");
+        if (skin == NULL)
+            cout << "elf not found " << endl;
         alive = true;
         path_length = 3;
         ID = id;

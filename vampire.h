@@ -19,6 +19,9 @@ public:
     }
 
     vampire(unsigned int id) {
+        skin = LoadImage("vampL.bmp");
+        if (skin == NULL)
+            cout << "vampire not found " << endl;
         alive = true;
         path_length = 10;
         ID = id;

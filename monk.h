@@ -9,6 +9,9 @@
 class monk : public warrior, public doctor {
 public:
     monk(unsigned int id) {
+        skin = LoadImage("monkL.bmp");
+        if (skin == NULL)
+            cout << "monk not found " << endl;
         alive = true;
         path_length = 4;
         ID = id;

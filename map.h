@@ -9,6 +9,8 @@
 #define HMM_MAP_H
 
 
+#include <iomanip>
+
 using namespace std;
 
 enum TileResource {
@@ -57,21 +59,21 @@ public:
         delete[] map_of_id;
     }
 
-    static void print_map() {
-        cout << "x/y ";
-        for (int k = 0; k < width; ++k) {
-            cout << k << " ";
-        }
-        cout << endl;
-        cout << endl;
-        for (int i = 0; i < height; ++i) {
-            cout << i << "   ";
-            for (int j = 0; j < width; ++j) {
-                cout << map_of_id[i][j] << " ";
-            }
-            cout << endl;
-        }
-    }
+//    static void print_map() {
+//        cout << setfill(' ') << setw(3)  << "x/y ";
+//        for (int k = 0; k < width; ++k) {
+//            cout << setfill(' ') << setw(2) << k << " ";
+//        }
+//        cout << endl;
+//        cout << endl;
+//        for (int i = 0; i < height; ++i) {
+//            cout << setfill(' ') << setw(1) << i << "   ";
+//            for (int j = 0; j < width; ++j) {
+//                cout << setfill(' ') << setw(2) << map_of_id[i][j] << " ";
+//            }
+//            cout << endl;
+//        }
+//    }
 
     static unsigned int get_creature_ID(int x, int y) // возвращает ID персонажа в клетке.
     {

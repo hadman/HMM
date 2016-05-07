@@ -7,16 +7,16 @@
 
 //#include "map.h"
 
-class the_game // формирует из 2-х игроков список ходов персонажей.
-    // Ходит по этому кольцевому списку,
-    // заставляя, делать ход первого либо второго игрока
-    // до тех пор пока хотя бы одного из персонажей не закончится армия
+class the_game // ��������� �� 2-� ������� ������ ����� ����������.
+    // ����� �� ����� ���������� ������,
+    // ���������, ������ ��� ������� ���� ������� ������
+    // �� ��� ��� ���� ���� �� ������ �� ���������� �� ���������� �����
 {
 private:
-    vector<creature *> game_creature_Mas; // список существ на поле боя
+    vector<creature *> game_creature_Mas; // ������ ������� �� ���� ���
     int game_creature_Mas_Count;
 
-    void make_game_mass(player &gamer1, player &gamer2) // заполнение массива персонажей
+    void make_game_mass(player &gamer1, player &gamer2) // ���������� ������� ����������
     {
         int i;
         for (i = 0; i < min(gamer1.count_of_creatures(), gamer2.count_of_creatures()); ++i) {
@@ -33,7 +33,7 @@ private:
         }
     }
 
-    bool is_this_creature_of_this_game(unsigned int creature_id) { // проверяем учавствует ли персонаж с таким id в игре
+    bool is_this_creature_of_this_game(unsigned int creature_id) { // ��������� ���������� �� �������� � ����� id � ����
         for (int i = 0; i < game_creature_Mas_Count; ++i) {
             if (game_creature_Mas[i]->get_id() == creature_id) {
                 return true;
@@ -52,69 +52,164 @@ private:
 
 public:
 
+    void print_map() {
+        // cout << setfill(' ') << setw(3)  << "x/y ";
+        // for (int k = 0; k < width; ++k) {
+        //     cout << setfill(' ') << setw(2) << k << " ";
+        // }
+        // cout << endl;
+        // cout << endl;
+        // for (int i = 0; i < height; ++i) {
+        //     cout << setfill(' ') << setw(1) << i << "   ";
+        //     for (int j = 0; j < width; ++j) {
+        //         cout << setfill(' ') << setw(2) << map_of_id[i][j] << " ";
+        //     }
+        //     cout << endl;
+        // }
+        SDL_RenderClear(renderer);
+
+        for (int i = 0; i < game_creature_Mas_Count; i++)
+            if (game_creature_Mas[i]->alive)
+                ApplySurface(game_creature_Mas[i]->y0 * 85, game_creature_Mas[i]->x0 * 95, game_creature_Mas[i]->skin,
+                             renderer);
+
+//ApplySurface(rand() % 300,rand() % 300,game_creature_Mas[0]->skin,renderer);
+        SDL_RenderPresent(renderer); // ������ ������������ ������
+        SDL_Delay(100);
+
+
+    }
+
     the_game(player &gamer1, player &gamer2) //
     {
         make_game_mass(gamer1, gamer2);
         game_creature_Mas_Count = game_creature_Mas.size();
     }
 
-    void start(player &gamer1, player &gamer2) {
+    bool start(player &gamer1, player &gamer2, SDL_Renderer *GAMErenderer) {
+
         cout << "POSHUMIM BLEAT!!!" << endl;
+        cout << "GAME START" << endl;
         int i = 0;
         int inp_x;
         int inp_y;
-        bool is_it_enemy; // true: можно ударить. false: нельзя ударить
+        bool is_it_enemy; // true: ����� �������. false: ������ �������
 
-        int tmp_x; // позиция, с которой можно ударить персонажа
+        int tmp_x; // �������, � ������� ����� ������� ���������
         int tmp_y;
 
-        int check; // проверка
+        int check; // ��������
+        bool ext = true;
 
-//        bool is_point_empty; // true: клетка пустая. false: не пустая
+        SDL_Event ev;
 
-        creature *tmp_creature; // буфер временнго персонажа
+        const Uint8 *keyState;
+
+//        bool is_point_empty; // true: ������ ������. false: �� ������
+
+        creature *tmp_creature; // ����� ��������� ���������
+
+        // for (int z=1; z< 4;z++)
+        // {
+        //     print_map();
+        //     Sleep(10000);
+        // };
+
+        // while (true)
+        // {
+        //   print_map();
+        // }
 
         while (gamer1.count_of_creatures() > 0 &&
-               gamer2.count_of_creatures() > 0) // игра идет до тех пор пока у обоих персонажей есть живые игроки
+               gamer2.count_of_creatures() > 0 &&  // ���� ���� �� ��� ��� ���� � ����� ���������� ���� ����� ������
+               ext)
         {
-            if (game_creature_Mas[i]->alive) // ход дается только живым персонажам
+            if (game_creature_Mas[i]->alive) // ��� ������ ������ ����� ����������
             {
                 cout << endl;
                 cout << "RACE:" << game_creature_Mas[i]->race << ";  ID:" << game_creature_Mas[i]->ID << endl;
                 cout << "path length of creature:" << game_creature_Mas[i]->path_length << endl;
+
+                string text = "";
+                SDL_StartTextInput();
                 do {
                     repeat_input:;
                     check = true;
-                    if (game_creature_Mas[i]->belong_to == 1) // ходит первый игрок
+                    // if (game_creature_Mas[i]->belong_to == 1) // ����� ������ �����
+                    // {
+                    //     cout << "the course of player I:" << endl;
+                    //     check = (gamer1.input_position(inp_x, inp_y)); // ���� ���������� ������� �� �������
+                    // } else {
+                    //     cout << "the course of player II:" << endl;
+                    //     check = gamer2.input_position(inp_x, inp_y); // ���� ���������� ������� �� �������
+                    // }
+                    // SDL_StartTextInput();
+                    //Sleep(10000);
+                    // inp_x = rand() % 5;
+                    // inp_y = rand() % 10;
+
+
+                    while (SDL_PollEvent(&ev) != 0)
                     {
-                        cout << "the course of player I:" << endl;
-                        check = (gamer1.input_position(inp_x, inp_y)); // если координаты выходят за границу
-                    } else {
-                        cout << "the course of player II:" << endl;
-                        check = gamer2.input_position(inp_x, inp_y); // если координаты выходят за границу
+                        if (ev.type == SDL_QUIT) // �������� ����
+                        {
+                            ext = false;
+                            return 0;
+                        } else if (ev.type == SDL_TEXTINPUT ||
+                                   ev.type == SDL_KEYDOWN) // ���� ������ ��� ������ ������� �������
+                        {
+                            system("cls");
+                            if (ev.type == SDL_KEYDOWN && ev.key.keysym.sym == SDLK_BACKSPACE && text.length() > 0)
+                                text = text.substr(0, text.length() - 1);
+                            else if (ev.type == SDL_KEYDOWN && ev.key.keysym.sym == SDLK_RETURN)
+                                text = "";
+                            else if (ev.type == SDL_TEXTINPUT)
+                                text += ev.text.text;
+
+
+                            cout << text << endl;
+                        }
+                        if (ev.type == SDL_MOUSEBUTTONDOWN) // ������� ������ ����
+                        {
+                            if (ev.button.button == SDL_BUTTON_LEFT) {
+                                inp_y = ev.button.x / 85;
+                                inp_x = ev.button.y / 95;
+                                cout << "LEFT BUTTON PRESSED! at x: " << ev.button.x << " y: " << ev.button.y << endl;
+                                cout << "inp_x: " << inp_x << " inp_y: " << inp_y << endl;
+                                goto try_to_do_step;
+                            }
+                        };
                     }
 
-                    if (check == 0) // если координаты введены неправильно
+                    keyState = SDL_GetKeyboardState(NULL);
+
+
+                    print_map();
+                    goto repeat_input;
+
+                    if (check == 0) // ���� ���������� ������� �����������
                     {
                         cout << "ERROR: this position is't on the map" << endl;
                         goto repeat_input;
                     }
-                    if (check == -1) // если игрок хочет пропустить ход
+                    if (check == -1) // ���� ����� ����� ���������� ���
                     {
                         cout << "You missed your turn" << endl;
                         break;
                     }
 
-                    if (!(map::is_this_point_empty(inp_x, inp_y))) // если клетка непустая
+                    try_to_do_step:;
+
+                    if (!(map::is_this_point_empty(inp_x, inp_y))) // ���� ������ ��������
                     {
-//                        is_point_empty = false; // клетка непустая
+//                        is_point_empty = false; // ������ ��������
                         tmp_creature = return_creature_by_id(
-                                map::get_id_of_point(inp_x, inp_y)); // создаем копию персонажа из указанной клетки
+                                map::get_id_of_point(inp_x, inp_y)); // ������� ����� ��������� �� ��������� ������
                         if (game_creature_Mas[i]->belong_to ==
-                            tmp_creature->belong_to)          // если это друг
+                            tmp_creature->belong_to)          // ���� ��� ����
                         {
                             if (game_creature_Mas[i]->add_hp(
-                                    tmp_creature)) // если этот персонаж умеет восстанавливать здоровье
+                                    tmp_creature)) // ���� ���� �������� ����� ��������������� ��������
                             {
                                 cout << "ATTACK: I add hp to " << tmp_creature->ID << endl;
                             } else {
@@ -122,40 +217,40 @@ public:
                                 goto repeat_input;
                             }
                         } else {
-                            if (game_creature_Mas[i]->arrow_attack(tmp_creature)) // если этот персонаж умеет стрелять
+                            if (game_creature_Mas[i]->arrow_attack(tmp_creature)) // ���� ���� �������� ����� ��������
                             {
                                 cout << "ATTACK: I shot a " << tmp_creature->ID << endl;
-                            } else // попытаемся подойти к нему
+                            } else // ���������� ������� � ����
                             {
                                 if (!(game_creature_Mas[i]->can_creature_move_to_point(inp_x,
-                                                                                       inp_y)))// проверяем в зоне досягаемости ли введенные координаты
+                                                                                       inp_y)))// ��������� � ���� ������������ �� ��������� ����������
                                 {
                                     cout << "ERROR: this creature can't move so far" << endl;
                                     goto repeat_input;
-                                } else // если персонаж в зоне досягаемости
+                                } else // ���� �������� � ���� ������������
                                 {
                                     if ((abs(game_creature_Mas[i]->x0 - inp_x) <= 1) &&
                                         (abs(game_creature_Mas[i]->y0 - inp_y)) <=
-                                        1) // проверяем находится ли утакуевое существо уже в радиусе одной клетки
+                                        1) // ��������� ��������� �� ��������� �������� ��� � ������� ����� ������
                                     {
                                         if (game_creature_Mas[i]->attack(
-                                                tmp_creature)) // умеет ли это существо атаковать
+                                                tmp_creature)) // ����� �� ��� �������� ���������
                                         {
                                             cout << "attackHere = " << tmp_creature->get_id() <<
-                                            endl; // атакуем текущим персонажем персонажа в клетке
+                                            endl; // ������� ������� ���������� ��������� � ������
                                         } else {
                                             cout << "ERROR: this creature can't attack" << endl;
                                             goto repeat_input;
                                         }
                                     } else {
                                         if (search_empty_point(game_creature_Mas[i], tmp_creature, tmp_x,
-                                                               tmp_y)) // проверяет можно ли подойти к существу вплотную
+                                                               tmp_y)) // ��������� ����� �� ������� � �������� ��������
                                         {
                                             if (game_creature_Mas[i]->attack(
-                                                    tmp_creature)) // умеет ли это существо атаковать
+                                                    tmp_creature)) // ����� �� ��� �������� ���������
                                             {
                                                 cout << "attackThere = " << tmp_creature->get_id() <<
-                                                endl; // атакуем текущим персонажем персонажа в клетке
+                                                endl; // ������� ������� ���������� ��������� � ������
                                                 game_creature_Mas[i]->move(tmp_x, tmp_y);
                                             } else {
                                                 cout << "ERROR: this creature can't attack" << endl;
@@ -170,53 +265,55 @@ public:
                             }
                         }
 
-                    } else // тогда в нее нужно походить
+                    } else // ����� � ��� ����� ��������
                     {
                         if (
                                 !(game_creature_Mas[i]->can_creature_move_to_point(inp_x,
-                                                                                   inp_y)))// проверяем в зоне досягаемости ли введенные координаты
+                                                                                   inp_y)))// ��������� � ���� ������������ �� ��������� ����������
                         {
                             cout << "ERROR: this creature can't move so far" << endl;
                             goto repeat_input;
                         } else {
                             game_creature_Mas[i]->move(inp_x, inp_y);
                         }
-//                        is_point_empty = true; // клетка пустая
+//                        is_point_empty = true; // ������ ������
                     }
-                } while (false);
 
-                map::print_map();
+                } while (false);
+                SDL_StopTextInput();
 
                 i = (i + 1) % game_creature_Mas_Count;
             } else {
                 i = (i + 1) % game_creature_Mas_Count;
             }
+            print_map();
         }
+
         cout << "RRRAAAUND!!!" << endl;
     }
 
     bool search_empty_point(creature *creature1, creature *creature2, int &x,
-                            int &y) // поиск ближайшей точки, куда может встать creature1, чтобы ударить creature2. False: creature2 нельзя ударить
+                            int &y) // ����� ��������� �����, ���� ����� ������ creature1, ����� ������� creature2. False: creature2 ������ �������
     {
-        double distance = sqrt(width * width + height * height) + 10; // расстояние по умолчанию
-        bool found = false;                                   // проверка найдена ли хотя бы одна свободаная клетка
+        double distance = sqrt(width * width + height * height) + 10; // ���������� �� ���������
+        bool found = false;                                   // �������� ������� �� ���� �� ���� ���������� ������
         for (int i = 0; i < height; ++i) {
             for (int j = 0; j < width; ++j) {
                 if ((map_of_id[i][j] == 0) &&
-                    // смотрит чтобы клетка была пустой
+                    // ������� ����� ������ ���� ������
                     (abs(creature1->x0 - i) < creature1->path_length) &&
-                    // смотрит чтобы клетка была в зоне удара creature1
+                    // ������� ����� ������ ���� � ���� ����� creature1
                     (abs(creature1->y0 - j) < creature1->path_length) &&
                     (abs(creature2->x0 - i) <= 1) &&
-                    // смотрит чтобы клетка была соседней с creature2
+                    // ������� ����� ������ ���� �������� � creature2
                     (abs(creature2->y0 - j) <= 1) &&
                     (creature1->distance_to_point(i, j) <
-                     distance))               // смотрит чтобы расстояние до клетки было меньше чем в предыдущем случае
+                     distance))               // ������� ����� ���������� �� ������ ���� ������ ��� � ���������� ������
                 {
-                    x = i;                                          // сохраняем координаты
+                    x = i;                                          // ��������� ����������
                     y = j;
                     cout << "new x = " << x << " new y = " << y << endl;
-                    distance = creature1->distance_to_point(i, j);    // сохраняем расстояние
+                    distance = creature1->distance_to_point(i, j);    // ��������� ����������
                     found = true;
                 }
             }

@@ -12,6 +12,9 @@ class Tent_ambulance : public doctor // палатка скорой помощи
 private:
 public:
     Tent_ambulance(unsigned int id) {
+        skin = LoadImage("tentL.bmp");
+        if (skin == NULL)
+            cout << "tent not found " << endl;
         alive = true;
         path_length = 0; // не может ходить
         ID = id;
