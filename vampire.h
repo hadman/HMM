@@ -13,13 +13,19 @@ public:
             cout << " another->damage = " << this->damage << endl;
             int regeneration = another->get_damage(this->damage) / 2;
             health += regeneration;
+            if (health > start_hp) // нельзя добавить существу больше здоровья, чем было при его создании
+            {
+                health = start_hp;
+            }
+
             cout << ID << " got " << regeneration << " hp" << endl;
         }
         return true;
     }
 
+
     vampire(unsigned int id) {
-        skin = LoadImage("vampL.bmp");
+        skin = LoadImage("vamp.png");
         if (skin == NULL)
             cout << "vampire not found " << endl;
         alive = true;

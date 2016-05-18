@@ -9,7 +9,7 @@
 class monk : public warrior, public doctor {
 public:
     monk(unsigned int id) {
-        skin = LoadImage("monkL.bmp");
+        skin = LoadImage("monk.png");
         if (skin == NULL)
             cout << "monk not found " << endl;
         alive = true;

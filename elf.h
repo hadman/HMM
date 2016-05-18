@@ -12,7 +12,7 @@
 class elf : public warrior, public archer {
 public:
     elf(unsigned int id) {
-        skin = LoadImage("elfL.bmp");
+        skin = LoadImage("elf.png");
         if (skin == NULL)
             cout << "elf not found " << endl;
         alive = true;

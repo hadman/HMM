@@ -6,15 +6,12 @@
 #define HMM_ID_H
 
 
-class creature_ID {
-private:
-    unsigned int idNum;
-public:
-    creature_ID() {
-        idNum = 0;
-    }
+static int idNum = 0;
 
-    unsigned int get_id() {
+class creature_ID {
+public:
+
+    static unsigned int get_id() {
         idNum++;
         return idNum;
     }

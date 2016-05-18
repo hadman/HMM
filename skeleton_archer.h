@@ -6,10 +6,10 @@
 #define HMM_SKELETON_ARCHER_H
 
 
-class skeleton_archer : public undead, public archer, public warrior {
+class skeleton_archer : public warrior, public archer {
 public:
     skeleton_archer(unsigned int id) {
-        skin = LoadImage("skeletonL.bmp");
+        skin = LoadImage("skeleton.png");
         if (skin == NULL)
             cout << "skeleton not found " << endl;
         alive = true;
