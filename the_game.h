@@ -423,7 +423,7 @@ SDL_Delay(100);
             print_map(bg,net, player_bg, step);
         }
         int winnerNum; // number of winner player
-        if(gamer1.creatureCount >= gamer2.creatureCount)
+        if(gamer1.count_of_creatures() > gamer2.count_of_creatures())
         {
             winnerNum = 1;
         }else
