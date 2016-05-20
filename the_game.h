@@ -18,9 +18,13 @@ private:
 
     SDL_Texture * bg = NULL; // текстура персонажа
     SDL_Texture * net = NULL; // текстура персонажа
+    SDL_Texture * console = NULL; // текстура консоли
+    SDL_Texture * step = NULL; // текстура консоли
     SDL_Texture * hp = NULL; // текстура персонажа
     SDL_Texture * bgframe = NULL; // текстура персонажа
     SDL_Texture * player_bg = NULL; // текстура персонажа
+
+    string logs_memory = " "; // хранение старых логов
 
     void make_game_mass(player &gamer1, player &gamer2) // заполнение массива персонажей
     {
@@ -54,11 +58,26 @@ private:
                 return game_creature_Mas[i];
             }
         }
+        return NULL;
     }
 
 public:
 
-    void print_map(SDL_Texture * bg, SDL_Texture * net, SDL_Texture * player_bg) {
+    void print_steps(SDL_Texture * step, creature* active_creature) // отрисовка доступных ходов
+    {
+        for (int i = 0; i < width; i++)
+           {
+               for (int j = 0; j < height; j++)
+               {
+                    if(active_creature->can_creature_move_to_point(j,i) && map::is_this_point_empty(j,i) != 0)
+                    {
+                        ApplySurface(i*85,j*95+116,step,renderer);
+                    }
+               };
+           };
+    }
+
+    void print_map(SDL_Texture * bg, SDL_Texture * net, SDL_Texture * player_bg, SDL_Texture * step) {
         // cout << setfill(' ') << setw(3)  << "x/y ";
         // for (int k = 0; k < width; ++k) {
         //     cout << setfill(' ') << setw(2) << k << " ";
@@ -75,9 +94,13 @@ public:
 SDL_RenderClear(renderer);
 //cout << player_bg << endl;
 ApplySurface(0,0,bg,renderer); // отрисовка фона
-ApplySurface(0,116,net,renderer); // отрисовка фона
+ApplySurface(0,116,net,renderer); // отрисовка сетки
+ApplySurface(0,591,console,renderer); // отрисовка консоли
+Print_Font(gFont, textColor, logs ,70,591+10, 15); // логи
 ApplySurface(10,10,player_bg,renderer,1); // скин первого игрока
 ApplySurface(SCREEN_WIDTH-85-10,10,player_bg,renderer,2); // скин правого игрока
+
+
 
 
 for (int i = 0;i < game_creature_Mas_Count ;i++ )
@@ -90,22 +113,17 @@ for (int i = 0;i < game_creature_Mas_Count ;i++ )
 
         //cout << i << " = "<< game_creature_Mas[i]->count_hp << endl;
 
-        int Number = game_creature_Mas[i]->health;       // number to be converted to a string
-
-        string health_str;          // string which will contain the result
-
-        ostringstream convert;   // stream used for the conversion
-
-        convert << Number;      // insert the textual representation of 'Number' in the characters in the stream
-
-        health_str = convert.str(); // set 'Result' to the contents of the stream
 
 
-
-        if(game_creature_Mas[i]->is_it_active) ApplySurface(game_creature_Mas[i]->y0*85,game_creature_Mas[i]->x0*95+116,bgframe,renderer);      // обводка активного персонажа
+        if(game_creature_Mas[i]->is_it_active)
+            {
+                ApplySurface(game_creature_Mas[i]->y0*85,game_creature_Mas[i]->x0*95+116,bgframe,renderer);      // обводка активного персонажа
+                print_steps(step, game_creature_Mas[i]);
+            }
         ApplySurface(game_creature_Mas[i]->y0*85 ,game_creature_Mas[i]->x0*95+116,game_creature_Mas[i]->skin,renderer, game_creature_Mas[i]->belong_to); // отрисовка персонажа
-        ApplySurface(game_creature_Mas[i]->y0*85+41 ,game_creature_Mas[i]->x0*95+116+76,hp,renderer); // hp
-        Print_Font(gFont, textColor, health_str ,game_creature_Mas[i]->y0*85+41+15, game_creature_Mas[i]->x0*95+116+76+2, 10 ); // количество hp
+        Print_Font(gFont, textColor, intToStr(game_creature_Mas[i]->ID),game_creature_Mas[i]->y0*85+5, game_creature_Mas[i]->x0*95+116+5, 15 ); // ID
+        ApplySurface(game_creature_Mas[i]->y0*85+41 ,game_creature_Mas[i]->x0*95+116+76,hp,renderer); // hp bg
+        Print_Font(gFont, textColor, intToStr(game_creature_Mas[i]->health),game_creature_Mas[i]->y0*85+41+15, game_creature_Mas[i]->x0*95+116+76+2, 10 ); // количество hp
     }
 }
 
@@ -143,6 +161,12 @@ SDL_Delay(100);
         net = LoadImage("net.png");
         if (net == NULL)
             cout << "net not found " << endl;
+        console = LoadImage("console.png");
+        if (console == NULL)
+            cout << "console not found " << endl;
+        step = LoadImage("step.png");
+        if (step == NULL)
+            cout << "step not found " << endl;
         player_bg = LoadImage("player_bg.png");
         cout << "player_bg" <<  player_bg << endl;
         if (player_bg == NULL)
@@ -180,6 +204,7 @@ SDL_Delay(100);
         bool ext = true;
 
         SDL_Event ev;
+        logs = " ";
 
         const Uint8* keyState;
 
@@ -187,23 +212,13 @@ SDL_Delay(100);
 
         creature *tmp_creature; // буфер временнго персонажа
 
-         // for (int z=1; z< 4;z++)
-         // {
-         //     print_map();
-         //     Sleep(10000);
-         // };
-
-        // while (true)
-        // {
-        //   print_map();
-        // }
-
         while (gamer1.count_of_creatures() > 0 &&
                gamer2.count_of_creatures() > 0 &&  // игра идет до тех пор пока у обоих персонажей есть живые игроки
                 ext)
         {
             if (game_creature_Mas[i]->alive) // ход дается только живым персонажам
             {
+                logs_memory = logs;
                 game_creature_Mas[i]->is_it_active = true; // делаем персонажа активным
                 cout << endl;
                 cout << "RACE:" << game_creature_Mas[i]->race << ";  ID:" << game_creature_Mas[i]->ID << endl;
@@ -214,18 +229,6 @@ SDL_Delay(100);
                 do {
                     repeat_input:;
                     check = 1;
-                    // if (game_creature_Mas[i]->belong_to == 1) // ходит первый игрок
-                    // {
-                    //     cout << "the course of player I:" << endl;
-                    //     check = (gamer1.input_position(inp_x, inp_y)); // если координаты выходят за границу
-                    // } else {
-                    //     cout << "the course of player II:" << endl;
-                    //     check = gamer2.input_position(inp_x, inp_y); // если координаты выходят за границу
-                    // }
-                    // SDL_StartTextInput();
-                    //Sleep(10000);
-                    // inp_x = rand() % 5;
-                    // inp_y = rand() % 10;
 
 
                     while (SDL_PollEvent(&ev) != 0) // нужно обработать наведение мышью на персонажей
@@ -253,19 +256,54 @@ SDL_Delay(100);
                         }
                         if (ev.type == SDL_MOUSEBUTTONDOWN) // нажатие кнопки мыши
                         {
-                            if(ev.button.button == SDL_BUTTON_LEFT)
+                            if(ev.button.button == SDL_BUTTON_LEFT) // ОБРАБОТКА ЛЕВОГО КЛИКА
                             {
-                                inp_y = ev.button.x / 85;
-                                inp_x = (ev.button.y - 116) / 95;
-                                cout << "LEFT BUTTON PRESSED! at x: " << ev.button.x  << " y: " << ev.button.y << endl;
-                                cout << "inp_x: " << inp_x  << " inp_y: " << inp_y << endl;
-                                goto try_to_do_step;
+                                if(ev.button.y >= 116 && ev.button.y <= 591) // нажатие по полю боя
+                                {
+                                   inp_y = ev.button.x / 85;
+                                    inp_x = (ev.button.y - 116) / 95;
+                                    cout << "LEFT BUTTON PRESSED! at x: " << ev.button.x  << " y: " << ev.button.y << endl;
+                                    cout << "inp_x: " << inp_x  << " inp_y: " << inp_y << endl;
+                                    goto try_to_do_step;
+                                }else if (ev.button.y >= 591 && ev.button.y <= 591 + 40) // нижняя панель
+                                    {
+                                        if(ev.button.x >= 781 && ev.button.x <= 850) // пропуск хода
+                                        {
+                                            check = -1;
+                                            goto try_to_do_step;
+                                        }
+                                    };
                             }
                         }else if(ev.type == SDL_MOUSEMOTION)
                         {
-                            if(ev.motion.x > 300)
+                            if(ev.motion.y >= 116 && ev.motion.y <= 591) // наведение на поле боя по полю боя
                             {
-                                cout << "FIND!" << endl;
+                               inp_y = ev.button.x / 85;
+                                inp_x = (ev.button.y - 116) / 95;
+                                unsigned int tmp_id;
+                                //cout << "id of it creature = " << map::get_creature_ID(inp_x,inp_y) << endl;
+                                tmp_id = map::get_creature_ID(inp_x,inp_y);
+                                tmp_creature = return_creature_by_id(tmp_id);
+
+                                if(tmp_creature != NULL)
+                                {
+                                    logs = tmp_creature->race + ". ";
+                                    if(tmp_creature->damage != 0)
+                                    {
+                                        logs += "DAMAGE: " + intToStr(tmp_creature->damage) + " - " + intToStr(tmp_creature->damage_max) + ". "; // вывод силы атаки
+                                    }
+                                    if(tmp_creature->count_hp != 0)
+                                    {
+                                        logs += "ADD HP: " + intToStr(tmp_creature->count_hp) + " - " + intToStr(tmp_creature->count_hp_max) + ". ";
+                                    }
+                                    if(tmp_creature-> arrow_damage != 0)
+                                    {
+                                        logs += "ARROW DAMAGE: " + intToStr(tmp_creature->arrow_damage) + " - " + intToStr(tmp_creature->arrow_damage_max) + ". ";
+                                    }
+                                    logs += "DEFENSE: " + intToStr(tmp_creature->defense) + ". ";
+
+                                }else logs = logs_memory;
+                                //goto try_to_do_step;
                             }
                         }
                     }
@@ -274,7 +312,7 @@ SDL_Delay(100);
 
 
 
-                    print_map(bg, net, player_bg);
+                    print_map(bg, net, player_bg, step);
                     goto repeat_input;
 
                     try_to_do_step:;
@@ -287,6 +325,7 @@ SDL_Delay(100);
                     if (check == -1) // если игрок хочет пропустить ход
                     {
                         cout << "You missed your turn" << endl;
+                        logs = game_creature_Mas[i]->race + " missed it's turn.";
                         break;
                     }
 
@@ -367,6 +406,7 @@ SDL_Delay(100);
                             goto repeat_input;
                         } else {
                             game_creature_Mas[i]->move(inp_x, inp_y);
+                            logs = game_creature_Mas[i]->race + " went to: (" + intToStr(inp_x) + "," + intToStr(inp_y) + ")";
                         }
 //                        is_point_empty = true; // клетка пустая
                     }
@@ -380,23 +420,18 @@ SDL_Delay(100);
                 game_creature_Mas[i]->is_it_active = false; // делаем персонажа не активным
                 i = (i + 1) % game_creature_Mas_Count;
             }
-            print_map(bg,net, player_bg);
+            print_map(bg,net, player_bg, step);
         }
         int winnerNum; // number of winner player
-        if(gamer1.creatureCount > gamer2.creatureCount)
+        if(gamer1.creatureCount >= gamer2.creatureCount)
         {
             winnerNum = 1;
         }else
         {
             winnerNum = 2;
         }
-        string winnerNum_str;          // string which will contain the result
 
-        ostringstream convert;   // stream used for the conversion
 
-        convert << winnerNum;      // insert the textual representation of 'Number' in the characters in the stream
-
-        winnerNum_str = convert.str(); // set 'Result' to the contents of the stream
 
         repeat_thank:;
 
@@ -404,13 +439,15 @@ SDL_Delay(100);
         {
             if (ev.type == SDL_QUIT) // закрытие окна
             {
-                return 0;
+                logs = " ";
             }
         }
 
-        SDL_RenderClear(renderer);
-        Print_Font(gFont, textColor, "The " + winnerNum_str + " player won the game", 30 , 250, 40 );
-        Print_Font(gFont, textColor, "Thank you for playing", 30 , 350, 40 );
+        //SDL_RenderClear(renderer);
+        logs = "The " + intToStr(winnerNum) + " player won the game. " + "Thank you for playing.";
+        print_map(bg,net, player_bg,step);
+        //Print_Font(gFont, textColor, "The " + winnerNum_str + " player won the game", 30 , 250, 40 );
+        //Print_Font(gFont, textColor, "Thank you for playing", 30 , 350, 40 );
 
         SDL_RenderPresent(renderer); // рисуем получившийся рендер
         SDL_Delay(100);

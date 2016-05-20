@@ -17,8 +17,10 @@ public:
         ID = id;
         health = 10;
             start_hp = health;
-        damage = 10;
-        arrow_damage = 13;
+        damage = 9;
+        damage_max = 11;
+        arrow_damage = 12;
+        arrow_damage_max = 14;
         defense = 9;
         race = "skeleton_archer";
     };

@@ -20,8 +20,10 @@ public:
         ID = id;
         health = 10;
             start_hp = health;
-        damage = 12;
-        arrow_damage = 14;
+        damage = 11;
+        damage_max = 13;
+        arrow_damage = 13;
+        arrow_damage_max = 15;
         defense = 9;
         race = "elf";
     }

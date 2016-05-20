@@ -8,7 +8,7 @@
 
 class archer : public virtual creature {
 private:
-    int arrow_damage; // урон от стрел
+
 public:
 
     friend class skeleton_archer;
@@ -26,7 +26,9 @@ public:
 
         if (attacked_creature->alive) {
             //cout << "I arrow_attack " << attacked_creature->ID << endl;
-            attacked_creature->get_damage(arrow_damage); // наносит врагу урон стрелой.
+            int tmp_dmg = generate_in(arrow_damage, arrow_damage_max); // расчет силы выстрела
+            logs = race + "(" + intToStr(ID) + ") " + " arrow attacked: " + attacked_creature->race + "(" + intToStr(attacked_creature->ID) + ") " + "- " + intToStr(tmp_dmg) + " hp.";
+            attacked_creature->get_damage(tmp_dmg); // наносит врагу урон стрелой.
         }
         return true;
     }

@@ -83,6 +83,10 @@ public:
         player_bg = LoadImage("player_bg.png");
         if (player_bg == NULL)
             cout << "player_bg not found " << endl;
+        SDL_Texture * console = NULL; // текстура консоли
+        console = LoadImage("console.png");
+        if (console == NULL)
+            cout << "console not found " << endl;
 
         SDL_Event ev; // событие
 
@@ -147,18 +151,29 @@ public:
                         {
                             if(ev.button.button == SDL_BUTTON_LEFT)
                             {
-                                inp_y = ev.button.x / 85;
-                                inp_x = (ev.button.y - 116) / 95;
-                                cout << "LEFT BUTTON PRESSED! at x: " << ev.button.x  << " y: " << ev.button.y << endl;
-                                cout << "inp_x: " << inp_x  << " inp_y: " << inp_y << endl;
-                                goto try_to_do_step;
+                                if(ev.button.y >= 116 && ev.button.y <= 591) // нажатие по полю боя
+                                {
+                                   inp_y = ev.button.x / 85;
+                                    inp_x = (ev.button.y - 116) / 95;
+                                    cout << "LEFT BUTTON PRESSED! at x: " << ev.button.x  << " y: " << ev.button.y << endl;
+                                    cout << "inp_x: " << inp_x  << " inp_y: " << inp_y << endl;
+                                    goto try_to_do_step;
+                                }else if(ev.button.y >= 591 && ev.button.y <= 591 + 40) // нижняя панель
+                                {
+                                    if(ev.button.x >= 781 && ev.button.x <= 850) // пропуск хода
+                                        {
+                                            check = -1;
+                                            goto try_to_do_step;
+                                        }
+                                }
+
                             }
                         };
                     }
 
                     keyState = SDL_GetKeyboardState(NULL);
 
-                    print(choose_creature, bg, player_bg);
+                    print(choose_creature, bg, player_bg, console);
                     goto repeat_input;
 
                     try_to_do_step:;
@@ -229,7 +244,7 @@ public:
 
     }
 
-    void print(vector<creature *> choose_creature, SDL_Texture * bg , SDL_Texture * player_bg) // рисует экран выбора армии
+    void print(vector<creature *> choose_creature, SDL_Texture * bg , SDL_Texture * player_bg, SDL_Texture * console) // рисует экран выбора армии
     {
         SDL_RenderClear(renderer);
 
@@ -247,8 +262,10 @@ public:
 
         belong_to_str = convert.str(); // set 'Result' to the contents of the stream
 
-        Print_Font(gFont, textColor, "Please input army of " +  belong_to_str + " player", 30 , 300, 40 );
+        logs = "Please input 5 creatures of " +  belong_to_str + " player";
         ApplySurface(10,10,player_bg,renderer,playerNum);
+        ApplySurface(0,591,console,renderer); // отрисовка консоли
+        Print_Font(gFont, textColor, logs ,70,591+10, 15); // количество hp
 
 
 

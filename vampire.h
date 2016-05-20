@@ -6,12 +6,14 @@
 #define HMM_VAMPIRE_H
 
 
-class vampire : public undead, public warrior {
+class vampire : public warrior {
 public:
     virtual bool attack(creature *another) {
         if (another->alive) {
             cout << " another->damage = " << this->damage << endl;
-            int regeneration = another->get_damage(this->damage) / 2;
+            int tmp_dmg = generate_in(damage, damage_max); // расчет силы выстрела
+            logs = race + "(" + intToStr(ID) + ") " + " attacked: " + another->race + "(" + intToStr(another->ID) + ") " + "- " + intToStr(tmp_dmg) + " hp.";
+            int regeneration = another->get_damage(tmp_dmg) / 2;
             health += regeneration;
             if (health > start_hp) // нельзя добавить существу больше здоровья, чем было при его создании
             {
@@ -33,7 +35,8 @@ public:
         ID = id;
         health = 15;
         start_hp = health;
-        damage = 14;
+        damage = 13;
+        damage_max = 15;
         defense = 5;
         race = "vampire";
         //cout << "vampire created!" << endl;

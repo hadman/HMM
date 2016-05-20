@@ -77,7 +77,7 @@ public:
 
     static unsigned int get_creature_ID(int x, int y) // возвращает ID персонажа в клетке.
     {
-        return map_of_id[x - 1][y - 1];
+        return map_of_id[x][y];
     };
 
     static bool is_this_point_empty(int x, int y) // проверяет постая ли клетка. Пустая: true; Не пустая: false

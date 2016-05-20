@@ -10,11 +10,16 @@
 #include <windows.h>
 #include <string>
 
+#include <cstdlib>
+#include <ctime>
+
 SDL_Window *window = NULL;
 SDL_Renderer *renderer = NULL;
 
 const int SCREEN_WIDTH = 850;
-const int SCREEN_HEIGHT = 591; // 475
+const int SCREEN_HEIGHT = 591+40; // 475
+
+static std::string logs = " "; // логи консоли
 
 
 //Globally used font
@@ -194,6 +199,20 @@ bool loadFromRenderedText( std::string textureText, SDL_Color& textColor , TTF_F
     return mTexture != NULL;
 }
 
+int generate_in(int a, int b) // генератор случаного числа от a до b
+{
+    if (b >= a)
+    {
+        //unsigned int tmp = 41;
+        srand(time(0));
+        int tmp = rand();
+        std::cout << "URON = " << tmp << std::endl;
+        tmp = tmp % (b - a  + 1);
+        std::cout << "a + tmp = " << a + tmp << std::endl;
+        return a + tmp;
+    }
+    return 0;
+}
 
 #include "map.h"
 #include "creature.h"
@@ -251,6 +270,7 @@ int main(int argc, char *argv[]) {
 
 
 
+
    player player1(1);
    player player2(2);
 
@@ -275,6 +295,8 @@ int main(int argc, char *argv[]) {
     //SDL_RenderPresent( renderer );
 
     //SDL_Delay(3000);
+
+
 
     player1.make_army(); // выбор игроком армии
     player2.make_army();

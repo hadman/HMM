@@ -20,7 +20,11 @@ public:
 
     virtual bool attack(creature *attacked_creature) {  // возможность атаковать. это существо может атаковать
         if (attacked_creature->alive) {
-            attacked_creature->get_damage(this->damage); // наносит врагу урон обычной атакой.
+            int tmp_dmg = generate_in(damage, damage_max); // расчет силы выстрела
+
+            logs = race + "(" + intToStr(ID) + ") " + " attacked: " + attacked_creature->race + "(" + intToStr(attacked_creature->ID) + ") " + "- " + intToStr(tmp_dmg) + " hp.";
+
+            attacked_creature->get_damage(tmp_dmg); // наносит врагу урон обычной атакой.
         }
         return true;
     }

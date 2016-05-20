@@ -22,7 +22,7 @@ protected:
     // начальное кол-во здоровья
     int health;
     //количество очков здоровья
-    int defense;
+    int defense = 0;
     //защита - то, сколько урона существо может предотвратить
     int path_length;
     //длина хода
@@ -34,8 +34,12 @@ protected:
     //живо существо(1) или нет(0)
     int belong_to;
     //принадлежность к 1 или 2 игроку
-    int count_hp; // сколько здоровья вылечивает
-    int damage;
+    int count_hp = 0; // сколько здоровья вылечивает
+    int count_hp_max = 0;
+    int damage = 0;
+    int damage_max = 0;
+    int arrow_damage = 0; // урон от стрел
+    int arrow_damage_max = 0;
     string race; // хранит название расы существа
     SDL_Texture * skin = NULL; // текстура персонажа
     bool is_it_active = false;

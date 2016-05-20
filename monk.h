@@ -17,9 +17,11 @@ public:
         ID = id;
         health = 12;
             start_hp = health;
-        damage = 12;
+        damage = 11;
+        damage_max = 13;
         defense = 9;
-        count_hp = 4;
+        count_hp = 3;
+        count_hp_max = 5;
         race = "monk";
     }
 };
